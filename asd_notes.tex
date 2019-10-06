@@ -2,8 +2,16 @@
 \usepackage{amsmath, amsthm, amssymb, calrsfs, wasysym, verbatim, bbm, color, graphics, geometry}
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
+\usepackage{minted}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{url}
 
 \geometry{tmargin=.75in, bmargin=.75in, lmargin=.75in, rmargin = .75in}  
+
+\theoremstyle{remark}
+\newtheorem*{example}{Przykład}
 
 
 \title{Algorytmy i struktury danych -- notatki do kursu}
@@ -17,12 +25,109 @@
 
 \vspace{.25in}
 
-Dokument nie zastępuje podręcznika akademickiego.
+Dokument ten jest pomocą dla prowadzącego i nie zastępuje w żaden sposób podręcznika akademickiego.
 W szczególności nauka z tego dokumentu nie jest gwarantem zdania egzaminu.
 
 \section{Wprowadzenie}
 
 \subsection{Zasady zaliczenia przedmiotu}
 
+\section{Proste algorytmy}
+
+\subsection{Pierwiastki kwadratowe}
+Niech $a,b,c \in \mathbb{R}, a \neq 0$.
+Pierwiastki równania kwadratowego o postaci $y=ax+bx+c$ wyliczamy korzystając ze znanego ze szkoły średniej algorytmu.
+
+\begin{algorithm}
+    \caption{Pierwiastki rzeczywiste równania kwadratowego}
+    \label{euclid}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Quadratic-Roots}{$a, b, c$}
+            \State $\Delta \gets b^2 - 4ac$
+            \If{$\Delta > 0$} 
+            	\State $x_1 \gets \frac{-b - \sqrt{\Delta}}{2a}$
+            	\State $x_2 \gets \frac{-b + \sqrt{\Delta}}{2a}$
+            \State \Return $\left \{x_1, x_2 \right \}$
+            \ElsIf{$\Delta = 0$}
+            		\State $x \gets \frac{-b}{2a} $
+            		\State \Return $\{x \}$
+            	\Else
+            	\State \Return $\{\varnothing\}$
+            \EndIf
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\inputminted[linenos]{python}{code/2_quad.py}
+
+\subsection{Algorytm Euklidesa}
+Wprowadźmy najpierw operację dzielenia modulo.
+\begin{equation*}
+	a \bmod b = r \quad \Rightarrow \quad a = bn + r, \qquad |n| > |r| \ge 0
+\end{equation*}
+
+\begin{example}
+\begin{align*}
+7 \bmod 6 &= 1, \qquad (\text{ponieważ } 7 = 6 \cdot 1 + 1)\\
+17 \bmod 7 &= 3, \qquad (\text{ponieważ } 17 = 7 \cdot 2 + 3)\\
+-14 \bmod 2 &= 0\\
+9 \bmod 6 &= 3\\
+-17 \bmod 7 &= 4 
+\end{align*}	
+\end{example}
+
+
+Według algorytmu Euklidesa, NWD($a,b$), gdzie $a, b \in $ wyliczymy w poniższy sposób:
+\begin{align*}
+	a&=q_{0}b+r_{0}\\
+	b&=q_{1}r_{0}+r_{1}\\
+	r_{0}&=q_{2}r_{1}+r_{2}\\
+	r_{1}&=q_{3}r_{2}+r_{3}\\
+	&\,\,\,\vdots \\
+	r_{n-1}&=q_{n-1}r_{n-2}+r_{n-1}\\
+	r_{n}&=q_{n}r_{n-1}+r_{n}
+\end{align*}
+Jeżeli $r_n=0$, to NWD($a,b$) jest równe $r_{n-1}$.
+
+\begin{example}
+	Przykład: NWD dla 1071 oraz 462.
+	\begin{align*}
+		1071 &= 2 \cdot 462 + 147 \\
+		462 &= 3 \cdot 147 + 21 \\
+		147 &= 7 \cdot 21 + 0
+	\end{align*}
+	Wynikiem jest 21.
+\end{example}
+
+
+\begin{algorithm}
+    \caption{Algorytm Euklidesa}
+    \label{euclid}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Euclid}{$a,b$}
+            \State $r\gets a \bmod b$
+            \While{$r\not=0$}
+                \State $a \gets b$
+                \State $b \gets r$
+                \State $r \gets a \bmod b$
+            \EndWhile
+            \State \Return $b$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\inputminted[linenos]{python}{code/2_euclid_iterative.py}
+
+\subsection{Silnia (iteracyjnie)}
+Silnię definiujemy w następujący sposób:
+\begin{equation}
+	n!=\prod _{k=1}^{n}k\qquad {\mbox{dla }}n\in \mathbb{N}
+\end{equation}
+Już $11!$ to więcej, niż jest ludzi w Polsce.
+\inputminted[linenos]{python}{code/2_factorial_iterative.py}
+
+\subsection{Największy element ciągu}
+Wejście: lista liczb, wyjście: największy element z listy\footnote{Formalnie definicja jest nieco bardziej skomplikowana -- patrz \url{https://en.wikipedia.org/wiki/Maximal_and_minimal_elements}}.
+\inputminted{python}{code/2_max.py}
 
 \end{document}
