@@ -157,8 +157,29 @@ for row in a:
 
 
 \subsection{Proste operacje na wektorze i macierzy}
-Powiemy, że $C =AB$ dla macierzy $A$ o wymiarach $n \times m$ oraz macierzy $B$ o wymiarach $m \times p$
+Powiemy, że $C =AB$ dla macierzy $A$ o wymiarach $n \times m$ oraz macierzy $B$ o wymiarach $n \times p$
 $c_{{ij}}=\sum _{{k=1}}^{m}a_{{ik}}b_{{kj}}$, złożoność obliczeniowa rzędu $\Theta(n^3)$ (dla macierzy $n \times n$, nieformalnie - bo trzy pętle) lub $\Theta(nmp)$ (dla macierzy $n \times m$ oraz $m \times p$)
+
+\begin{algorithm}
+    \caption{Mnożenie macierzy}
+    \label{euclid}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{MatMul}{$A, B$}
+            \State $C \gets $ nowa macierz o wymiarach $m \times p$
+            	\For{$i$ from 1 to $n$}
+            		\For{$j$ from 1 to $p$}
+            			\State $sum \gets 0$
+            			\For{$k$ from 1 to $m$}
+            				\State $sum \gets sum + A_{ik}\cdot B_{kj}$
+	             	\EndFor
+	             	\State $C_{ij} \gets sum$
+	            	\EndFor
+            	\EndFor
+            \State \Return $C$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
 \begin{minted}{python}
 # source: https://www.programiz.com/python-programming/examples/multiply-matrix
 # 3x3 matrix
@@ -186,5 +207,34 @@ for r in result:
 
 \section{Rekurencja}
 
+Podprogramy, rekurencja
+
+
+\subsection{Silnia rekurencyjnie}
+${\displaystyle 1! = 1, \quad n!=n\cdot (n-1)!.}$
+
+\begin{minted}{python}
+# source https://www.programiz.com/python-programming/examples/factorial-recursion
+def recur_factorial(n):
+   if n == 1:
+       return n
+   else:
+       return n*recur_factorial(n-1)
+\end{minted}
+
+\subsection{min, max, n elementów ciagu Fib.}
+${\displaystyle F_{0}=0,\quad F_{1}=1, \quad F_{n}=F_{n-1}+F_{n-2},}$
+
+\begin{minted}{python}
+def F(n):
+    if n == 0: return 0
+    elif n == 1: return 1
+    else: return F(n-1)+F(n-2)
+\end{minted}
+
+Min i max w notebooku
+
+\subsection{Drzewa wywołań rekurencyjnych}
+Cormen, s. 37
 
 \end{document}
