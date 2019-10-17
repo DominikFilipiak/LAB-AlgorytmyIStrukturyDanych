@@ -7,6 +7,10 @@
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage{url}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\usetikzlibrary{matrix,arrows,automata}
 
 \geometry{tmargin=.75in, bmargin=.75in, lmargin=.75in, rmargin = .75in}  
 
@@ -63,7 +67,7 @@ Pierwiastki równania kwadratowego o postaci $y=ax+bx+c$ wyliczamy korzystając 
 \subsection{Algorytm Euklidesa}
 Wprowadźmy najpierw operację dzielenia modulo.
 \begin{equation*}
-	a \bmod b = r \quad \Rightarrow \quad a = bn + r, \qquad |n| > |r| \ge 0
+	a \bmod b = r \quad \Rightarrow \quad a = bn + r, \qquad |n| > r \ge 0
 \end{equation*}
 
 \begin{example}
@@ -79,15 +83,15 @@ Wprowadźmy najpierw operację dzielenia modulo.
 
 Według algorytmu Euklidesa, NWD($a,b$), gdzie $a, b \in $ wyliczymy w poniższy sposób: 
 \begin{align*}
-	a&=q_{0}b+r_{0}\\
-	b&=q_{1}r_{0}+r_{1}\\
-	r_{0}&=q_{2}r_{1}+r_{2}\\
+	a&=q_{1}b+r_{1}\\
+	b&=q_{2}r_{1}+r_{2}\\
 	r_{1}&=q_{3}r_{2}+r_{3}\\
+	r_{2}&=q_{4}r_{3}+r_{4}\\
 	&\,\,\,\vdots \\
-	r_{n-1}&=q_{n-1}r_{n-2}+r_{n-1}\\
-	r_{n}&=q_{n}r_{n-1}+r_{n}
+	r_{n-2}&=q_{n}r_{n-1}+r_{n}\\
+	r_{n-1}&=q_{n+1}r_{n}+0
 \end{align*}
-Jeżeli $r_n=0$, to NWD($a,b$) jest równe $r_{n-1}$.
+Jeżeli $r_{n+1}=0$, to NWD($a,b$) jest równe $r_{n}$.
 
 \begin{example}
 	Przykład: NWD dla 1071 oraz 462.
@@ -132,7 +136,12 @@ Wejście: lista liczb, wyjście: największy element z listy\footnote{Formalnie 
 
 \section{Listy i iteracje}
 
-\subsection{Tworzenie i wydruk listy}
+Tablica jest uporządkowaną kolekcją, w której każdy element ma swój indeks (dostęp bezpośredni po indeksie w stałym czasie).
+Tablica jednowymiarowa jako wektor, dwuwymiarowa jako macierz, n-wymiarowa jako coś w rodzaju tensora.
+Lista (jednokierunkowa) jest zbiorem elementów uporządkowanym liniowo (dostęp sekwencyjny, czas zależny od długości listy).
+
+
+\subsection{Tworzenie i wydruk listy w Pythonie}
 \begin{minted}{python}
 list = [1, 2, 3, 4]
 
