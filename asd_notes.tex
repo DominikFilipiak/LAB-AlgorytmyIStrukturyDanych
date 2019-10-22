@@ -18,6 +18,17 @@
 \newtheorem*{example}{Przykład}
 
 
+% Cormen's cost analysis
+\newcommand{\TITLE}[1]{\item[#1]}
+\renewcommand{\algorithmiccomment}[1]{$/\!/$ \parbox[t]{4.5cm}{\raggedright #1}}
+% ugly hack for for/while
+\newbox\fixbox
+\renewcommand{\algorithmicdo}{\setbox\fixbox\hbox{\ {} }\hskip-\wd\fixbox}
+% end of hack
+\newcommand{\algcost}[2]{\strut\hfill\makebox[1.5cm][l]{#1}\makebox[4cm][l]{#2}}
+
+
+
 \title{Algorytmy i struktury danych -- notatki do kursu}
 \author{mgr. inż Dominik Filipiak}
 \date{Rok akademicki 2019/2020}
@@ -57,6 +68,7 @@ Zgodnie z regulaminem studiów, przy ponad połowie nieobecności (usprawiedliwi
 	\item Lutz Mark. \emph{Python. Wprowadzenie}. Wydanie IV, Helion, 2011.
 	\item Papadimitriou Christos H. \emph{Złożoność obliczeniowa}. Helion, 2012.
 \end{itemize}
+Większość użytych tu przykładów będzie pochodziła z książki Cormena i reszty.
 
 \section{Proste algorytmy}
 
@@ -191,8 +203,8 @@ for row in a:
 
 
 \subsection{Proste operacje na wektorze i macierzy}
-Powiemy, że $C =AB$ dla macierzy $A$ o wymiarach $n \times m$ oraz macierzy $B$ o wymiarach $n \times p$
-$c_{{ij}}=\sum _{{k=1}}^{m}a_{{ik}}b_{{kj}}$, złożoność obliczeniowa rzędu $\Theta(n^3)$ (dla macierzy $n \times n$, nieformalnie - bo trzy pętle) lub $\Theta(nmp)$ (dla macierzy $n \times m$ oraz $m \times p$)
+Powiemy, że $C =AB$ dla macierzy $A$ o wymiarach $n \times m$ oraz macierzy $B$ o wymiarach $m \times p$, gdzie $c_{{ij}}=\sum _{{k=1}}^{m}a_{{ik}}b_{{kj}}$.
+Złożoność obliczeniowa rzędu $\Theta(n^3)$ (dla macierzy $n \times n$, nieformalnie - bo trzy pętle) lub $\Theta(nmp)$ (dla macierzy $n \times m$ oraz $m \times p$)
 
 \begin{algorithm}
     \caption{Mnożenie macierzy}
@@ -243,15 +255,29 @@ for r in result:
 
 Podprogramy, rekurencja
 
+\subsection{Silnia (rekurencyjnie)}
+Niech $n \in \mathbb{N}$.
 
-\subsection{Silnia rekurencyjnie}
-$n \in \mathbb{N}$
 \begin{equation*}
 n! = \begin{cases}
 1 &\text{jeżeli $n =1 $}\\
 n\cdot (n-1)! &\text{w każdym innym przypadku}
 \end{cases}
 \end{equation*}
+
+\begin{example}
+
+\begin{align*}
+5! &= 5 \cdot 4! \\
+&= 5 \cdot 4 \cdot 3! \\  
+&= 5 \cdot 4 \cdot 3 \cdot 2! \\  
+&= 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1! \\
+&= 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 \\
+&= 120
+\end{align*}
+
+\end{example}
+
 
 \begin{algorithm}
     \caption{Silnia (rekurencyjnie)}
@@ -277,8 +303,9 @@ def factorial(n):
        return n*factorial(n-1)
 \end{minted}
 
-\subsection{min, max, n elementów ciagu Fib.}
-${\displaystyle F_{0}=0,\quad F_{1}=1, \quad F_{n}=F_{n-1}+F_{n-2},}$
+
+\subsection{Ciag Fibonacciego, min, max}
+Ciąg Fibonacciego to ciąg, w którym każdy element począwszy od trzeciego jest sumą dwóch poprzednich elementów.
 
 \begin{equation*}
 F(n) = \begin{cases}
@@ -295,7 +322,71 @@ def F(n):
     else: return F(n-1)+F(n-2)
 \end{minted}
 
+\begin{example}
+\begin{align*}
+5! &= 5 \cdot 4! \\
+&= 5 \cdot 4 \cdot 3! \\  
+&= 5 \cdot 4 \cdot 3 \cdot 2! \\  
+&= 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1! \\
+&= 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 \\
+&= 120
+\end{align*}	
+\end{example}
+
+
 Min i max w notebooku
+
+\section{Wstęp do analizy algorytmów}
+
+\subsection{Sortowanie przez scalanie}
+
+Nieformalnie -- sortujemy jak talię kart, od lewej.
+
+\begin{example}
+Rozpatrzmy następującą tablicę. Zaczynamy od drugiego elementu:
+$$\begin{bmatrix}
+	5 & 2 & 4 & 6 & 1 & 3
+\end{bmatrix}$$
+Ponieważ $A[1] > A[0]$, to zamieniamy dwa pierwsze elementy miejscami i mamy:
+$$\begin{bmatrix}
+	2 & 5 & 4 & 6 & 1 & 3
+\end{bmatrix}$$
+Następnie rozpatrzmy trzeci element, czwórkę. Po przestawieniu mamy:
+$$\begin{bmatrix}
+	2 & 4 & 5 & 6 & 1 & 3
+\end{bmatrix}$$
+Szóstka jest w dobrym miejscu, nie zmienia się nic:
+$$\begin{bmatrix}
+	2 & 4 & 5 & 6 & 1 & 3
+\end{bmatrix}$$
+Jedynka wędruje na sam początek:
+$$\begin{bmatrix}
+	1 & 2 & 4 & 5 & 6 & 3
+\end{bmatrix}$$
+Pozostaje nam wziąć się za trójkę:
+$$\begin{bmatrix}
+	1 & 2 & 3 & 4 & 5 & 6
+\end{bmatrix}$$
+\end{example}
+
+\begin{algorithm}
+    \caption{Sortowanie przez scalanie}
+    \label{insertion_sort}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{InsertionSort}{$A$}  \algcost{koszt}{krotność}
+            	\For{$j \gets 1$ \textbf{to} $A$.$length$}  \algcost{$c_1$}{$n$}
+            		\State $key \gets A[j]$ \algcost{$c_2$}{$n-1$}
+            		\State // Wstaw $A[j]$ w posortowany ciąg $A[1 \ldots j-1]$ \algcost{$c_3$}{$0$}
+            		\State $i \gets i - 1$ \algcost{$c_4$}{$n-1$}
+            		\While{$i > 0$ \textbf{and} $A[i] > key$} \algcost{$c_5$}{$\sum_{j=1}^{n} \left ( t_{j} \right )$}
+            			\State $A[i+1] \gets A[i]$ \algcost{$c_6$}{$\sum_{j=1}^{n} \left ( t_{j} - 1\right )$}
+            			\State $i \gets i - 1$ \algcost{$c_7$}{$\sum_{j=1}^{n} \left ( t_{j} - 1 \right )$}
+            		\EndWhile
+            		\State $A[i+1] \gets key$ \algcost{$c_8$}{$n - 1$}
+            	\EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 \subsection{Drzewa wywołań rekurencyjnych}
 Cormen, s. 37
