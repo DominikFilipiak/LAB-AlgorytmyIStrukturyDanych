@@ -5,7 +5,7 @@
 \usepackage{minted}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
-\usepackage{algpseudocode}
+\usepackage[noend]{algpseudocode}
 \usepackage{url}
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -131,7 +131,7 @@ Już $11!$ to więcej, niż jest ludzi w Polsce.
 \inputminted[linenos]{python}{code/2_factorial_iterative.py}
 
 \subsection{Największy element ciągu}
-Wejście: lista liczb, wyjście: największy element z listy\footnote{Formalnie definicja jest nieco bardziej skomplikowana -- patrz \url{https://en.wikipedia.org/wiki/Maximal_and_minimal_elements}}.
+Pomijalne. Wejście: lista liczb, wyjście: największy element z listy\footnote{Formalnie definicja jest nieco bardziej skomplikowana -- patrz \url{https://en.wikipedia.org/wiki/Maximal_and_minimal_elements}}.
 \inputminted{python}{code/2_max.py}
 
 \section{Listy i iteracje}
@@ -171,7 +171,7 @@ $c_{{ij}}=\sum _{{k=1}}^{m}a_{{ik}}b_{{kj}}$, złożoność obliczeniowa rzędu 
 
 \begin{algorithm}
     \caption{Mnożenie macierzy}
-    \label{euclid}
+    \label{matmul}
     \begin{algorithmic}[1] % The number tells where the line numbering should start
         \Function{MatMul}{$A, B$}
             \State $C \gets $ nowa macierz o wymiarach $m \times p$
@@ -220,19 +220,48 @@ Podprogramy, rekurencja
 
 
 \subsection{Silnia rekurencyjnie}
-${\displaystyle 1! = 1, \quad n!=n\cdot (n-1)!.}$
+$n \in \mathbb{N}$
+\begin{equation*}
+n! = \begin{cases}
+1 &\text{jeżeli $n =1 $}\\
+n\cdot (n-1)! &\text{w każdym innym przypadku}
+\end{cases}
+\end{equation*}
+
+\begin{algorithm}
+    \caption{Silnia (rekurencyjnie)}
+    \label{factorial_recursive}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Factorial}{$n$}
+            	\If{$n = 1$}
+            		\State \Return $n$
+            	\Else
+            		\State \Return $n \cdot$\Call{Factorial}{$n-1$}
+            	\EndIf
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
 
 \begin{minted}{python}
 # source https://www.programiz.com/python-programming/examples/factorial-recursion
-def recur_factorial(n):
+def factorial(n):
    if n == 1:
        return n
    else:
-       return n*recur_factorial(n-1)
+       return n*factorial(n-1)
 \end{minted}
 
 \subsection{min, max, n elementów ciagu Fib.}
 ${\displaystyle F_{0}=0,\quad F_{1}=1, \quad F_{n}=F_{n-1}+F_{n-2},}$
+
+\begin{equation*}
+F(n) = \begin{cases}
+0 &\text{jeżeli $n =0 $}\\
+1 &\text{jeżeli $n =1 $}\\
+F_{n-1}+F_{n-2} &\text{w każdym innym przypadku}
+\end{cases}
+\end{equation*}
 
 \begin{minted}{python}
 def F(n):
