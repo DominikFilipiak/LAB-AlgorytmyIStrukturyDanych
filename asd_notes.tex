@@ -303,7 +303,6 @@ def factorial(n):
        return n*factorial(n-1)
 \end{minted}
 
-
 \subsection{Ciag Fibonacciego, min, max}
 Ciąg Fibonacciego to ciąg, w którym każdy element począwszy od trzeciego jest sumą dwóch poprzednich elementów.
 Niech $n \in \mathbb{N}$.
@@ -335,6 +334,15 @@ def F(n):
 
 
 Min i max w notebooku
+
+\subsection{Algorytm Euklidesa (rekurencyjnie)}
+
+\begin{minted}{python}
+def gcd(a,b):
+    if a % b == 0:
+       return b
+    return gcd(b, a % b)
+\end{minted}
 
 \section{Analiza algorytmów}
 
@@ -376,7 +384,7 @@ $$\begin{bmatrix}
         \Function{InsertionSort}{$A$}  \algcost{koszt}{krotność}
             	\For{$j \gets 2$ \textbf{to} $A$.$length $}  \algcost{$c_1$}{$n$}
             		\State $key \gets A[j]$ \algcost{$c_2$}{$n-1$}
-            		\State // Wstaw $A[j]$ w posortowany ciąg $A[1 \ldots j-1]$ \algcost{$c_3$}{$0$}
+            		\State // Wstaw $A[j]$ w posortowany ciąg $A[1 \ldots j-1]$ \algcost{$0$}{$n-1$}
             		\State $i \gets j - 1$ \algcost{$c_4$}{$n-1$}
             		\While{$i > 0$ \textbf{and} $A[i] > key$} \algcost{$c_5$}{$\sum_{j=2}^{n} t_{j} $}
             			\State $A[i+1] \gets A[i]$ \algcost{$c_6$}{$\sum_{j=2}^{n} \left ( t_{j} - 1\right )$}
