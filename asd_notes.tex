@@ -378,7 +378,7 @@ $$\begin{bmatrix}
 \end{example}
 
 \begin{algorithm}
-    \caption{Sortowanie przez scalanie (przykład z książki -- liczymy od 1!)}
+    \caption{Sortowanie przez wstawianie (przykład z książki -- liczymy od 1!)}
     \label{insertion_sort}
     \begin{algorithmic}[1] % The number tells where the line numbering should start
         \Function{InsertionSort}{$A$}  \algcost{koszt}{krotność}
@@ -444,8 +444,57 @@ T(n) &= c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 \left ( \frac{n(n+1)}{2} - 1 \right
 \end{align*}
 Powyższe można przedstawić jako $an^2 + bn + c$ dla pewnych stałych $a$, $b$ i $c$ -- jest to więc funkcja kwadratowa.
 
-\subsection{Sortowanie przez scalanie
-}
+\subsection{Dziel i zwyciężaj}
+
+Metoda dziel i zwyciężaj ma trzy fazy:
+\begin{description}
+	\item[Dziel.] Dzielimy problem na mniejsze podproblemy.
+	\item[Zwyciężaj] Rozwiązujemy podproblemy rekurencyjnie -- jeżeli są dostatecznie małe, to robimy to bezpośrednio.
+	\item[Połącz] Scalamy cząstkowe wyniki w jedno rozwiązanie naszego problemu.
+\end{description}
+
+\subsection{Sortowanie przez scalanie}
+
+\begin{algorithm}
+    \caption{Sortowanie przez scalanie (przykład z książki -- liczymy od 1!)}
+    \label{merge_sort}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{MergeSort}{$A, p, r$} 
+            	\If{$p < r$}
+            		\State $q \gets \lfloor (p + r)/2 \rfloor$
+            		\State $\Call{MergeSort}{A, p, q}$
+            		\State $\Call{MergeSort}{A, q+1, r}$
+            		\State $\Call{Merge}{A, p, q, r}$
+            	\EndIf
+        \EndFunction
+        
+        	\Function{Merge}{$A, p, q, r$} 
+            	\State $n_1 \gets q -p + 1$
+            	\State $n_2 \gets r-q$
+            	\State $L[1..n_{1}+1] \gets$ nowa tablica
+            	\State $R[1..n_{2}+1] \gets$ nowa tablica
+            	\For{i $\gets 1$  \textbf{to} $n_1$ }
+            		\State $L[i] \gets A[p+i-1]$ 
+            	\EndFor
+            	\For{j $\gets 1$  \textbf{to} $n_2$ }
+            		\State $R[j] \gets A[q+j]$ 
+            	\EndFor
+            	\State $L[n_1 + 1] \gets \infty$
+            	\State $R[n_2 + 1] \gets \infty$
+            	\State $i \gets 1$
+            	\State $j \gets 1$
+            	\For{k $\gets p$ \textbf{to} $r$ }
+            		\If{$L[i] \leq R[j]$}
+            			\State $A[k] \gets L[i]$
+            			\State $i \gets i + 1$
+            		\Else{}
+            			\State $A[k] \gets R[i]$
+            			\State $j \gets j + 1$
+            		\EndIf
+            	\EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 \subsection{Drzewa wywołań rekurencyjnych}
 Cormen, s. 37
