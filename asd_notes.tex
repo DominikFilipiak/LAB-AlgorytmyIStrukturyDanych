@@ -344,7 +344,7 @@ def gcd(a,b):
     return gcd(b, a % b)
 \end{minted}
 
-\section{Analiza algorytmów}
+\section{Sortowanie (cz. 1) oraz analiza algorytmów}
 
 \subsection{Sortowanie przez scalanie}
 
@@ -396,6 +396,9 @@ $$\begin{bmatrix}
     \end{algorithmic}
 \end{algorithm}
 
+W tym algorytmie fragment pętli z już posortowanymi liczbami nazwiemy \emph{niezmiennikiem pętli}.
+Dowodzimy poprawności algorytmów przez dowód trzech rzeczy dotyczących niezmiennika pętli: \emph{inicjowania} (niezmiennik prawdziwy przed iteracją), \emph{utrzymania} (jeżeli jest prawdziwy przed iteracją pętli, to jest prawdziwy w kolejnej iteracji) oraz \emph{zakończenia} (po zakończeniu pętli z niezmiennika wynika coś istotnego dla algorytmu).
+
 \begin{minted}{python}
 def insertionSort(A):
   print(A)
@@ -441,10 +444,15 @@ T(n) &= c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 \left ( \frac{n(n+1)}{2} - 1 \right
 \end{align*}
 Powyższe można przedstawić jako $an^2 + bn + c$ dla pewnych stałych $a$, $b$ i $c$ -- jest to więc funkcja kwadratowa.
 
+\subsection{Sortowanie przez scalanie
+}
+
 \subsection{Drzewa wywołań rekurencyjnych}
 Cormen, s. 37
 
 \section{Notacja asymptotyczna}
+
+
 
 \subsection{Rzędy wielkości funkcji}
 
