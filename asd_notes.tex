@@ -487,7 +487,7 @@ $$\begin{bmatrix}
 $$\begin{bmatrix}
 	6 \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 3 \end{bmatrix} \begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 4
 \end{bmatrix}$$
-A teraz zwyciężamy i scalamy, zaczynając od pierwszej pary:
+A teraz zwyciężamy (sortujemy) i scalamy, zaczynając od pierwszej pary:
 $$\begin{bmatrix}
 	5 & 6 \end{bmatrix} \begin{bmatrix} 3 \end{bmatrix} \begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 4
 \end{bmatrix}$$
@@ -646,7 +646,7 @@ $\Theta(1)$ jest pomijalne ze względu na $\Theta(n)$.
                 }
               }
             }
-            child [grow=down] {node (v) {$cn$}edge from parent[draw=none]}
+            child [grow=down] {node (v) {$cn \log_2 n + cn$}edge from parent[draw=none]}
           }
         }
       }
@@ -682,14 +682,39 @@ $\Theta(1)$ jest pomijalne ze względu na $\Theta(n)$.
 \path (r) -- (c) node [midway] {$\cdots$};
 \end{tikzpicture}
 %}
+\caption{Wizualizacja rekurencji dla sortowania przez scalanie.}
 \end{figure}
 
 Wysokość tego drzewa to $\log_2 n$, czyli jest $\log_2 n + 1 $ poziomów.
 Każdy poziom kosztuje $cn$, a więc czas działania to $cn(\log_2 n + 1) = cn \log_2 n + cn = \Theta(n \log n)$.
 
-\section{Notacja asymptotyczna}
+\section{Rzędy wielkości funkcji}
 
+\subsection{Notacja asympotyczna}
 
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie dokładnym oszacowaniem} dla $f(n)$, jeżeli:
+$$
+\Theta(g(n)) = \{ f(n): \exists_{c_1, c_2, n_0>0} \forall_{n \geq n_0} \left( 0 \leq c_1 g(n) \leq f(n) \leq c_2 g(n) \right) \}
+$$
+Zamiast pisać $f(n) \in \Theta(g(n))$ (co jest formalnie poprawne), często pisze się $f(n) = \Theta(g(n))$.
+Jest to wygodne, ale należy pamiętać, że tracimy wtedy przemienność.
+
+Często pisze się po prostu $O(n)$ w tym znaczeniu, choć jest to nieprecyzyjne.
+
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem górnym} dla $f(n)$, jeżeli:
+$$
+O(g(n)) = \{ f(n): \exists_{c, c, n_0>0} \forall_{n \geq n_0} \left(0 \leq f(n) \leq c g(n) \right) \}
+$$
+
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem dolnym} dla $f(n)$, jeżeli:
+$$
+\Omega(g(n)) = \{ f(n): \exists_{c, c, n_0>0} \forall_{n \geq n_0} \left(0 \leq c g(n) \leq f(n) \right) \}
+$$
+
+\begin{figure}
+	\includegraphics{figures/big_o}
+	\caption{Wizualizacja asymptotycznego ograniczenia funkcji. Źródło: Cormen et al.}
+\end{figure}
 
 \subsection{Rzędy wielkości funkcji}
 
@@ -725,5 +750,5 @@ Każdy poziom kosztuje $cn$, a więc czas działania to $cn(\log_2 n + 1) = cn \
 
 \subsection{Algorytm Aho-Corasik}
 
-\section{Czy P=NP?}
+\section{NP-zupełność. Czy P=NP?}
 \end{document}
