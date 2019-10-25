@@ -9,6 +9,7 @@
 \usepackage{url}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{booktabs}
 
 \usetikzlibrary{matrix,arrows,automata}
 
@@ -698,26 +699,104 @@ $$
 $$
 Zamiast pisać $f(n) \in \Theta(g(n))$ (co jest formalnie poprawne), często pisze się $f(n) = \Theta(g(n))$.
 Jest to wygodne, ale należy pamiętać, że tracimy wtedy przemienność.
-
 Często pisze się po prostu $O(n)$ w tym znaczeniu, choć jest to nieprecyzyjne.
+\begin{example}
+	Udowodnijmy, że $\frac{1}{2}n^2 - 3n = \Theta(n^2)$.
+	Potrzebujemy takich dodatnich stałych $c_1, c_2, n_0$, że:
+	$$
+	c_1 n^2 \leq \frac{1}{2}n^2 - 3n \leq c_2 n^2
+	$$
+	dla każdego $n \geq n_0$.
+	Podzielmy przez $n^2$:
+	$$
+	c_1 \leq \frac{1}{2} - \frac{3}{n} \leq c_2
+	$$
+	Prawa nierówność jest prawdziwa dla $n \geq 1$, gdy dobierzemy $c_2 \geq 1/2$.
+	Lewa strona się zgadza dla $n \geq 7$ oraz $c_1 \leq 1/14$.
+\end{example}
 
 Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem górnym} dla $f(n)$, jeżeli:
 $$
 O(g(n)) = \{ f(n): \exists_{c, c, n_0>0} \forall_{n \geq n_0} \left(0 \leq f(n) \leq c g(n) \right) \}
 $$
+Zauważmy, że $f(n)=\Theta (g(n)) \implies f(n)=O(g(n))$.
+Np. każda funkcja liniowa zawiera się w $O(n^2)$.
+Górne oszacowanie to w istocie szacowanie przypadku pesymistycznego -- algorytm zadziała nie gorzej niż $cg(n)$.
 
 Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem dolnym} dla $f(n)$, jeżeli:
 $$
 \Omega(g(n)) = \{ f(n): \exists_{c, c, n_0>0} \forall_{n \geq n_0} \left(0 \leq c g(n) \leq f(n) \right) \}
 $$
+Dolne oszacowanie to w istocie szacowanie przypadku optymistycznego -- algorytm nie zadziała lepiej niż $cg(n)$.
+Zauważmy, że $f(n)=\Theta (g(n)) \implies f(n)=\Omega(g(n))$.
+Co więcej, $f(n)=\Theta (g(n)) \iff f(n)=\Omega(g(n)) \land f(n)=O(g(n))$
+
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie niedokładnym ograniczeniem górnym} dla $f(n)$, jeżeli:
+$$
+o(g(n)) = \{ f(n): \forall_{c}\ \exists_{n_0>0}\ \forall_{n \geq n_0} \left(0 \leq f(n) < c g(n) \right) \}
+$$
+Główna różnica polega na tym, że oszacowanie zachodzi dla każdej stałej $c>0$ (zamiast dla pewnej stałej $c$).
+Inna definicja to:
+$$
+o(g(n)) = f(n) \implies \lim_{n \to \infty} \frac{f(n)}{g(n)} = 0
+$$
+
+\begin{example}
+$2n = o(n^2)$, ale $2n^2 \neq o(n^2)$
+\end{example}
+
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie niedokładnym ograniczeniem dolnym} dla $f(n)$, jeżeli:
+$$
+\omega(g(n)) = \{ f(n): \forall_{c}\ \exists_{n_0>0}\ \forall_{n \geq n_0} \left(0 \leq c g(n) < f(n)  \right) \}
+$$
+Główna różnica polega na tym, że oszacowanie zachodzi dla każdej stałej $c>0$ (zamiast dla pewnej stałej $c$).
+Inna definicja to:
+$$
+\omega(g(n)) = f(n) \implies \lim_{n \to \infty} \frac{f(n)}{g(n)} = \infty
+$$
+
+\begin{example}
+$\frac{n^2}{2} = \omega(n)$, ale $\frac{n^2}{2} \neq \omega(n^2)$.
+\end{example}
+
 
 \begin{figure}
 	\includegraphics{figures/big_o}
 	\caption{Wizualizacja asymptotycznego ograniczenia funkcji. Źródło: Cormen et al.}
 \end{figure}
 
-\subsection{Rzędy wielkości funkcji}
+\subsection{Standardowe rzędy wielkości funkcji}
 
+\begin{table}[]
+\caption{Popularne klasy złożoności}
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+Klasa & Opis \\ \midrule
+0 & brak potrzebnych operacji \\
+1 & stała \\
+$\log n$ & logarytmiczny \\
+$(\log n)^c$ & polilogarytmiczny \\
+$n$ & liniowy \\
+$n \log n$ & log-liniowy (quasi-liniowy) \\
+$n^2$ & kwadratowy \\
+$n^c$ & wielomianowy \\
+$c^n$ & wykładniczy \\
+$n!$ & silnia \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.5\textwidth]{figures/times}
+	\caption{Czas potrzebny na wykonanie funkcji o różnej złożoności. Źródło: DZone}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.5\textwidth]{figures/complexities}
+	\caption{Wizualizacja różnych klas złożoności funkcji. Źródło: Stack Overflow}
+\end{figure}
 
 \section{Struktury danych}
 \subsection{Kolejka}
