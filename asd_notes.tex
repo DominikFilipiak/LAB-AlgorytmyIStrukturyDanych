@@ -2,12 +2,11 @@
 \usepackage{amsmath, amsthm, amssymb, calrsfs, wasysym, verbatim, bbm, color, graphics, geometry}
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
-\usepackage[cache=false,outputdir=.texpadtmp]{minted}
+\usepackage[cache=false]{minted}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage[noend]{algpseudocode}
 \usepackage{url}
-\usepackage{fancybox}
 \usepackage{tikz}
 \usepackage{pgfplots}
 
@@ -593,56 +592,61 @@ Dla uproszczenia możemy założyć, że $n$ jest potęga 2.
 \begin{description}
 	\item[Dziel.] Znajdujemy środek przedziału i dzielimy w stałym czasie -- $D(n) = \Theta (1)$
 	\item[Zwyciężaj] Rozwiązujemy 2 podproblemy rekurencyjnie, każdy o rozmiarze $n/2$, co w sumie daje $2T(n/2)$
-	\item[Połącz] Procedura \emph{merge} działa w czasie $C(n)=\Theta(n)$ (trzy pętle bez zagnieżdżeń)
+	\item[Połącz] Procedura \emph{merge} działa w czasie $C(n)=\Theta(n)$ (trzy pętle bez zagnieżdżeń, $\Theta(n_1) + \Theta(n_2) = \Theta(n_1 + n_2) = \Theta(n)$)
 \end{description}
 
 \begin{equation*}
 T(n) = \begin{cases}
-\Theta(1), &\text{jeżeli $n \leq c $}\\
-aT(n/b) + D(n) + C(n) & \text{w każdym innym przypadku},
+\Theta(1), &\text{jeżeli $n \leq c $,}\\
+aT(n/b) + D(n) + C(n) & \text{w każdym innym przypadku}.
 \end{cases}
 \end{equation*}
-
-\subsection{Drzewa wywołań rekurencyjnych}
-Cormen, s. 37
+Podstawiając:
+\begin{equation*}
+T(n) = \begin{cases}
+\Theta(1), &\text{jeżeli $n  = 1 $,}\\
+2T(n/2) + \Theta(1) + \Theta(n) & \text{jeżeli $n > 1$}.
+\end{cases}
+\end{equation*}
+$\Theta(1)$ jest pomijalne ze względu na $\Theta(n)$.
 
 \begin{figure}
 %\ovalbox{
 \begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
-\node [circle,draw] (z){$n$}
-  child {node [circle,draw] (a) {$\frac{n}{2}$}
-    child {node [circle,draw] (b) {$\frac{n}{2^2}$}
+\node [circle,draw] (z){$cn$}
+  child {node [circle,draw] (a) {$\frac{cn}{2}$}
+    child {node [circle,draw] (b) {$\frac{cn}{2^2}$}
       child {node {$\vdots$}
-        child {node [circle,draw] (d) {$\frac{n}{2^k}$}}
-        child {node [circle,draw] (e) {$\frac{n}{2^k}$}}
+        child {node [circle,draw] (d) {$c$}}
+        child {node [circle,draw] (e) {$c$}}
       } 
       child {node {$\vdots$}}
     }
-    child {node [circle,draw] (g) {$\frac{n}{2^2}$}
+    child {node [circle,draw] (g) {$\frac{cn}{2^2}$}
       child {node {$\vdots$}}
       child {node {$\vdots$}}
     }
   }
-  child {node [circle,draw] (j) {$\frac{n}{2}$}
-    child {node [circle,draw] (k) {$\frac{n}{2^2}$}
+  child {node [circle,draw] (j) {$\frac{cn}{2}$}
+    child {node [circle,draw] (k) {$\frac{cn}{2^2}$}
       child {node {$\vdots$}}
       child {node {$\vdots$}}
     }
-  child {node [circle,draw] (l) {$\frac{n}{2^2}$}
+  child {node [circle,draw] (l) {$\frac{cn}{2^2}$}
     child {node {$\vdots$}}
     child {node (c){$\vdots$}
-      child {node [circle,draw] (o) {$\frac{n}{2^k}$}}
-      child {node [circle,draw] (p) {$\frac{n}{2^k}$}
+      child {node [circle,draw] (o) {$c$}}
+      child {node [circle,draw] (p) {$c$}
         child [grow=right] {node (q) {$=$} edge from parent[draw=none]
-          child [grow=right] {node (q) {$O_{k = \lg n}(n)$} edge from parent[draw=none]
+          child [grow=right] {node (q) {$cn$} edge from parent[draw=none]
             child [grow=up] {node (r) {$\vdots$} edge from parent[draw=none]
-              child [grow=up] {node (s) {$O_2(n)$} edge from parent[draw=none]
-                child [grow=up] {node (t) {$O_1(n)$} edge from parent[draw=none]
-                  child [grow=up] {node (u) {$O_0(n)$} edge from parent[draw=none]}
+              child [grow=up] {node (s) {$cn$} edge from parent[draw=none]
+                child [grow=up] {node (t) {$cn$} edge from parent[draw=none]
+                  child [grow=up] {node (u) {$cn$} edge from parent[draw=none]}
                 }
               }
             }
-            child [grow=down] {node (v) {$O(n \cdot \lg n)$}edge from parent[draw=none]}
+            child [grow=down] {node (v) {$cn$}edge from parent[draw=none]}
           }
         }
       }
@@ -655,11 +659,11 @@ Cormen, s. 37
 \path (k) -- (g) node [midway] {+};
 \path (d) -- (e) node [midway] {+};
 \path (o) -- (p) node [midway] {+};
-\path (o) -- (e) node (x) [midway] {$\cdots$}
-  child [grow=down] {
-    node (y) {$O\left(\displaystyle\sum_{i = 0}^k 2^i \cdot \frac{n}{2^i}\right)$}
-    edge from parent[draw=none]
-  };
+\path (o) -- (e) node (x) [midway] {$\cdots$};
+%  child [grow=down] {
+%    node (y) {$O\left(\displaystyle\sum_{i = 0}^k 2^i \cdot \frac{n}{2^i}\right)$}
+%    edge from parent[draw=none]
+%  };
 \path (q) -- (r) node [midway] {+};
 \path (s) -- (r) node [midway] {+};
 \path (s) -- (t) node [midway] {+};
@@ -667,19 +671,21 @@ Cormen, s. 37
 \path (t) -- (u) node [midway] {+};
 \path (z) -- (u) node [midway] {=};
 \path (j) -- (t) node [midway] {=};
-\path (y) -- (x) node [midway] {$\Downarrow$};
-\path (v) -- (y)
-  node (w) [midway] {$O\left(\displaystyle\sum_{i = 0}^k n\right) = O(k \cdot n)$};
+%\path (y) -- (x) node [midway] {$\Downarrow$};
+%\path (v) -- (y)
+%  node (w) [midway] {$O\left(\displaystyle\sum_{i = 0}^k n\right) = O(k \cdot n)$};
 \path (q) -- (v) node [midway] {=};
 \path (e) -- (x) node [midway] {+};
 \path (o) -- (x) node [midway] {+};
-\path (y) -- (w) node [midway] {$=$};
-\path (v) -- (w) node [midway] {$\Leftrightarrow$};
+%\path (y) -- (w) node [midway] {$=$};
+%\path (v) -- (w) node [midway] {$\Leftrightarrow$};
 \path (r) -- (c) node [midway] {$\cdots$};
 \end{tikzpicture}
 %}
 \end{figure}
 
+Wysokość tego drzewa to $\log_2 n$, czyli jest $\log_2 n + 1 $ poziomów.
+Każdy poziom kosztuje $cn$, a więc czas działania to $cn(\log_2 n + 1) = cn \log_2 n + cn = \Theta(n \log n)$.
 
 \section{Notacja asymptotyczna}
 
