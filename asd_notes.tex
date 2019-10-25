@@ -433,7 +433,12 @@ $$
 	6 & 5 & 4 & 3 & 2 & 1
 \end{bmatrix}$$
 Wiedząc\footnote{Patrz szereg $1+2+3+4+\ldots$}, że:
-$$\sum_{k=1}^n k = \frac{n(n+1)}{2}$$
+\begin{align*}
+\sum_{k=1}^n k = S =& n + (n-1) + \ldots + 2 + 1\\
+S &= 1 + 2 n + \ldots + (n-1) + n\\
+2S &= (n+1) + (n+1) + (n+1) + \ldots + (n+1) = n(n+1)\\
+\sum_{k=1}^n k &= \frac{n(n+1)}{2}
+\end{align*}
 mamy:
 $$\sum_{j=2}^n j = \frac{n(n+1)}{2} - 1, \qquad \sum_{j=2}^n \left(j - 1 \right) = \frac{n(n+1)}{2}.$$
 Tak więc w najgorszym wypadku:
@@ -565,4 +570,6 @@ Cormen, s. 37
 \subsection{Wyszukiwanie naiwne}
 
 \subsection{Algorytm Aho-Corasik}
+
+\section{Czy P=NP?}
 \end{document}
