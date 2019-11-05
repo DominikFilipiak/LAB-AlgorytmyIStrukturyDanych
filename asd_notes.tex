@@ -417,7 +417,7 @@ def insertionSort(A):
 
 Zbadajmy czas działania $T(n)$, gdzie $n$ jest długością wejściowej tablicy:
 $$
-T(n) = c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 \sum_{j=1}^{n} t_{j} + c_6 \sum_{j=2}^{n} \left ( t_{j} - 1\right )+ c_7 \sum_{j=2}^{n} \left ( t_{j} - 1\right ) + c_8 (n-1).
+T(n) = c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 \sum_{j=2}^{n} t_{j} + c_6 \sum_{j=2}^{n} \left ( t_{j} - 1\right )+ c_7 \sum_{j=2}^{n} \left ( t_{j} - 1\right ) + c_8 (n-1).
 $$
 W przypadku optymistycznym (gdy na wejściu dostajemy posortowaną tablicę) mamy $t_j = 1$ i tym samym omijamy linie 7 oraz 8 w algorytmie:
 $$
