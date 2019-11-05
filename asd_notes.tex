@@ -347,7 +347,7 @@ def gcd(a,b):
 
 \section{Sortowanie (cz. 1) oraz analiza algorytmów}
 
-\subsection{Sortowanie przez scalanie}
+\subsection{Sortowanie przez wstawianie}
 
 Nieformalnie -- sortujemy jak talię kart, od lewej.
 
@@ -469,7 +469,7 @@ T(n) = \begin{cases}
 aT(n/b) + D(n) + C(n) & \text{w każdym innym przypadku},
 \end{cases}
 \end{equation*}
-gdzie $n$ to rozmiar problemu, $c$ wyznacza mały rozmiar problemu który można od razu rozwiązać w stałym czasie, $aT(b/n)$ onacza $a$ podproblemów, każdy w rozmiarze $b/n$, $D(n)$ czas dzielenia, a $C(n)$ to czas scalaania
+gdzie $n$ to rozmiar problemu, $c$ wyznacza mały rozmiar problemu który można od razu rozwiązać w stałym czasie, $aT(n/b)$ onacza $a$ podproblemów, każdy w rozmiarze $b/n$, $D(n)$ czas dzielenia, a $C(n)$ to czas scalaania
 
 \subsection{Sortowanie przez scalanie}
 
