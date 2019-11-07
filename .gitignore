@@ -5,3 +5,4 @@ _minted-asd_notes/
 *.synctex.gz
 *.toc
 .DS_Store
+.texpadtmp
