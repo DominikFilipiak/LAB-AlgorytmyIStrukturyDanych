@@ -1,6 +1,7 @@
 *.pdf
 _minted-asd_notes/
-asd_notes.aux
-asd_notes.log
-asd_notes.synctex.gz
-asd_notes.toc
+*.aux
+*.log
+*.synctex.gz
+*.toc
+.DS_Store

@@ -1,0 +1,99 @@
+\documentclass[10pt, oneside]{article} 
+\usepackage{amsmath, amsthm, amssymb, calrsfs, wasysym, verbatim, bbm, color, graphics, geometry}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[cache=false]{minted}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+
+\usetikzlibrary{matrix,arrows,automata}
+
+\geometry{tmargin=.75in, bmargin=.75in, lmargin=.75in, rmargin = .75in}  
+
+\theoremstyle{remark}
+\newtheorem*{example}{Przykład}
+
+
+% Cormen's cost analysis
+\newcommand{\TITLE}[1]{\item[#1]}
+\renewcommand{\algorithmiccomment}[1]{$/\!/$ \parbox[t]{4.5cm}{\raggedright #1}}
+% ugly hack for for/while
+\newbox\fixbox
+\renewcommand{\algorithmicdo}{\setbox\fixbox\hbox{\ {} }\hskip-\wd\fixbox}
+% end of hack
+\newcommand{\algcost}[2]{\strut\hfill\makebox[1.5cm][l]{#1}\makebox[4cm][l]{#2}}
+
+
+\begin{document}
+	
+\section*{Sortowanie przez wstawianie z analizą}
+Przykład jest dokładnie omówiony książce Cormena.
+%\subsection{Sortowanie przez wstawianie}
+
+\begin{algorithm}
+    \caption{Sortowanie przez wstawianie (przykład z książki -- liczymy od 1!)}
+    \label{insertion_sort}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{InsertionSort}{$A$}  \algcost{koszt}{krotność}
+            	\For{$j \gets 2$ \textbf{to} $A$.$length $}  \algcost{$c_1$}{$n$}
+            		\State $key \gets A[j]$ \algcost{$c_2$}{$n-1$}
+            		\State // Wstaw $A[j]$ w posortowany ciąg $A[1 \ldots j-1]$ \algcost{$0$}{$n-1$}
+            		\State $i \gets j - 1$ \algcost{$c_4$}{$n-1$}
+            		\While{$i > 0$ \textbf{and} $A[i] > key$} \algcost{$c_5$}{$\sum_{j=2}^{n} t_{j} $}
+            			\State $A[i+1] \gets A[i]$ \algcost{$c_6$}{$\sum_{j=2}^{n} \left ( t_{j} - 1\right )$}
+            			\State $i \gets i - 1$ \algcost{$c_7$}{$\sum_{j=2}^{n} \left ( t_{j} - 1 \right )$}
+            		\EndWhile
+            		\State $A[i+1] \gets key$ \algcost{$c_8$}{$n - 1$}
+            	\EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+%\subsection{Analiza złożoności obliczeniowej sortowania przez scalanie}
+
+Zbadajmy czas działania $T(n)$, gdzie $n$ jest długością wejściowej tablicy:
+$$
+T(n) = c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 \sum_{j=2}^{n} t_{j} + c_6 \sum_{j=2}^{n} \left ( t_{j} - 1\right )+ c_7 \sum_{j=2}^{n} \left ( t_{j} - 1\right ) + c_8 (n-1).
+$$
+W przypadku optymistycznym (gdy na wejściu dostajemy posortowaną tablicę) mamy $t_j = 1$ i tym samym omijamy linie 7 oraz 8 w algorytmie:
+$$
+\begin{bmatrix}
+	1 & 2 & 3 & 4 & 5 & 6
+\end{bmatrix}$$
+\begin{align*}
+T(n) &= c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 (n-1) + c_8 (n-1) \\
+&= (c_1 + c_2 + c_4 + c_5 + c_8)n - (c_2 + c_4 + c_5 + c_8)
+\end{align*}
+Powyższe z kolei można przedstawić jako $an - b$ dla pewnych stałych $a$ oraz $b$, a więc jest to funkcja liniowa.
+
+Co w przypadku pesymistycznym, gdy dostajemy \emph{najgorszą} tablicę do posortowania? Każdy element będzie musiał być przesuwany do końca, więc $t_j = j$.
+$$
+\begin{bmatrix}
+	6 & 5 & 4 & 3 & 2 & 1
+\end{bmatrix}$$
+Wiedząc\footnote{Patrz szereg $1+2+3+4+\ldots$}, że:
+\begin{align*}
+\sum_{k=1}^n k &= S\\
+S &= n + (n-1) + \ldots + 2 + 1\\
+S &= 1 + 2  + \ldots + (n-1) + n\\
+2S &= (n+1) + (n+1) + (n+1) + \ldots + (n+1) = n(n+1)\\
+\sum_{k=1}^n k &= \frac{n(n+1)}{2}
+\end{align*}
+mamy:
+$$\sum_{j=2}^n j = \frac{n(n+1)}{2} - 1, \qquad \sum_{j=2}^n \left(j - 1 \right) = \frac{n(n+1)}{2}.$$
+Tak więc w najgorszym wypadku:
+
+\begin{align*}
+T(n) &= c_{1}n + c_2 (n-1) + c_4 (n-1) + c_5 \left ( \frac{n(n+1)}{2} - 1 \right ) + c_6 \left ( \frac{n(n+1)}{2} \right ) + c_7 \left ( \frac{n(n+1)}{2} \right ) + c_8 (n-1)\\
+&= \frac{1}{2} \left(c_5 + c_6 + c_7 \right) n^2 + \left(c_1 + c_2 +c_4 + \frac{1}{2} \left(c_5 - c_6 - c_7\right) + c^8 \right)n
+\end{align*}
+Powyższe można przedstawić jako $an^2 + bn + c$ dla pewnych stałych $a$, $b$ i $c$ -- jest to więc funkcja kwadratowa.
+
+\end{document}
