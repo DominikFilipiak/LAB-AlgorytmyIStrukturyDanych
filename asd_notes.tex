@@ -10,6 +10,11 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{booktabs}
+%\usepackage{xifthen}
+%\usepackage{paratype}
+
+%\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
 
 \usetikzlibrary{matrix,arrows,automata}
 
@@ -884,7 +889,42 @@ W kopcach typu \emph{max} mamy dla każdego $i$, które nie jest korzeniem $A[\C
 
 Czas działania zależy od zrównoważenia podziałów.
 
-Przypadek pesymistyczny.
+\newcommand{\boxstring}[2]% numbers, specifications
+{   \begin{tikzpicture}
+    [ l/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=lime!70!gray},
+        o/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=olive!50},
+        r/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=magenta!50!black, text=white, font=\bf, yshift=1.5mm},
+        b/.style={minimum width=8mm, minimum height=8mm, rounded corners=2mm, draw=black, fill=magenta!50!black, text=white, font=\bf},
+        g/.style={minimum width=8mm, minimum height=8mm, rounded corners=2mm, draw=black, fill=gray, text=white, font=\bf}, 
+    ]
+        \xdef\maxindex{0}
+        \foreach \rep/\opt in {#2}
+        {   \pgfmathtruncatemacro{\maxin}{\maxindex+\rep}
+            \xdef\minindex{\maxindex}
+            \xdef\maxindex{\maxin}
+            \foreach \x [count=\c] in {#1}
+            {   \pgfmathtruncatemacro{\drawbool}{and(\c>\minindex,\c<=\maxindex) ? 1 : 0}
+                \ifthenelse{\drawbool=1}
+                {   \node[\opt] at (\c,0) {\x};
+                }{}
+            }
+        }
+    \end{tikzpicture}
+    \bigskip
+}
+
+\textbf{Krok 1:} wybieramy $A[r]$
+
+\boxstring{5,3,9,8,7,2,4,1,6,5}{9/l,1/r}
+
+\textbf{Krok 2:} wybie
+
+\boxstring{3,2,4,1,5,5,9,8,7,6}{4/o,1/b,5/l}
+
+\textbf{Krok 3:} Repeat from step 1 with the two sub lists
+
+\boxstring{3,2,4,1,5,5,9,8,7,6}{3/o,1/r,1/g,4/l,1/r}
+
 
 \section{Wstęp do teorii grafów i związane z nią algorytmy}
 \subsection{Grafy oraz przechodzenie przez nie}
