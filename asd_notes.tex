@@ -821,7 +821,38 @@ $n!$ & silnia \\ \bottomrule
 
 \subsection{Sortowanie bąbelkowe}
 
-\subsection{Heapsort}
+\subsection{Heapsort -- sortowanie przez kopcowanie}
+
+\begin{algorithm}
+    \caption{Sortowanie szybkie (przykład z książki -- liczymy od 1!)}
+    \label{alg:quicksort}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Parent}{$i$} 
+            \State \Return $\lfloor i/2 \rfloor$
+        \EndFunction
+        	\Function{Left}{$i$} 
+            	\State \Return $2i$
+        \EndFunction
+        	\Function{Right}{$i$} 
+            	\State \Return $2i+1$
+        \EndFunction
+        
+        	\Function{Partition}{$A, p, r$} \algcost{}{$\Theta(n)$}
+            	\State $x \gets A[r]$
+            	\State $i \gets p - 1$
+            	\For{$j \gets p$  \textbf{to} $r - 1$ } \algcost{$c$}{$n=r-p+1$}
+            		\If{$A[j] \leq x$}
+	            		\State $i \gets i +1$ 
+	            		\State zamień $A[i]$ z $A[j]$
+	            	\EndIf
+            	\EndFor
+            	\State zamień $A[i+1]$ z $A[r]$
+            	\Return $i +1$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+W kopcach typu \emph{max} mamy dla każdego $i$, które nie jest korzeniem $A[\Call{Parent}{i} \geq A[i]$. Kopiec mający $n$ elementów ma wysokość $\Theta (\log_2 n)$
 
 \subsection{Quicksort}
 \begin{algorithm}
@@ -836,10 +867,10 @@ $n!$ & silnia \\ \bottomrule
             	\EndIf
         \EndFunction
         
-        	\Function{Partition}{$A, p, r$} 
+        	\Function{Partition}{$A, p, r$} \algcost{}{$\Theta(n)$}
             	\State $x \gets A[r]$
             	\State $i \gets p - 1$
-            	\For{$j \gets p$  \textbf{to} $r - 1$ }
+            	\For{$j \gets p$  \textbf{to} $r - 1$ } \algcost{$c$}{$n=r-p+1$}
             		\If{$A[j] \leq x$}
 	            		\State $i \gets i +1$ 
 	            		\State zamień $A[i]$ z $A[j]$
@@ -851,6 +882,9 @@ $n!$ & silnia \\ \bottomrule
     \end{algorithmic}
 \end{algorithm}
 
+Czas działania zależy od zrównoważenia podziałów.
+
+Przypadek pesymistyczny.
 
 \section{Wstęp do teorii grafów i związane z nią algorytmy}
 \subsection{Grafy oraz przechodzenie przez nie}
