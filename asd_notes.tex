@@ -798,11 +798,22 @@ $n!$ & silnia \\ \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=.5\textwidth]{figures/times}
-	\caption{Czas potrzebny na wykonanie funkcji o różnej złożoności. Źródło: DZone}
-\end{figure}
+
+\begin{table}[]
+\caption{Czas potrzebny na wykonanie funkcji o różnej złożoności. Źródło: DZone}
+\centering
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$n$ & $O(1)$ & $O(\log n)$ & $O(n)$ & $O(n \log n)$ & $O(n^2)$ & $...$ & $O(n3)$ \\ \midrule
+1 & 1 & 1 & 1 & 1 & 1 & ... & 1 \\
+2 & 1 & 1 & 2 & 2 & 4 & ... & 8 \\
+4 & 1 & 2 & 4 & 8 & 16 & ... & 64 \\
+8 & 1 & 3 & 8 & 24 & 64 & ... & 512 \\
+16 & 1 & 4 & 16 & 64 & 256 & ... & 4,096 \\
+1,024 & 1 & 10 & 1,024 & 10,240 & 1 & ... & 1,073,741,824 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}
 	\centering
@@ -888,6 +899,8 @@ W kopcach typu \emph{max} mamy dla każdego $i$, które nie jest korzeniem $A[\C
 \end{algorithm}
 
 Czas działania zależy od zrównoważenia podziałów.
+
+Zawsze dzielimy tablicę na 4 elementy, kolejno: elementy $\leq x$, elementy $> x$, dowolne, oraz $x$.
 
 \newcommand{\boxstring}[2]% numbers, specifications
 {   \begin{tikzpicture}
