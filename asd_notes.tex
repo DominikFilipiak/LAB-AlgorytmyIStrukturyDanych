@@ -10,11 +10,9 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{booktabs}
-%\usepackage{xifthen}
-%\usepackage{paratype}
-
-%\renewcommand*\familydefault{\sfdefault}
 \usepackage[T1]{fontenc}
+
+\setminted{linenos=true}
 
 \usetikzlibrary{matrix,arrows,automata}
 
@@ -48,6 +46,8 @@
 
 Dokument ten jest pomocą dla prowadzącego i nie zastępuje w żaden sposób podręcznika akademickiego.
 W szczególności nauka z tego dokumentu nie jest gwarantem zdania egzaminu.
+Dokument powstał głównie na podstawiem książki Cormena i in. \emph{Wprowadzenie do algorytmów}.
+Autor nie odpowiada ze ewentualne błędy w tym dokumencie.
 
 \section{Wprowadzenie}
 
@@ -600,7 +600,7 @@ print("mergesort(A): " + str(mergesort(A)))
 \subsection{Analiza złożoności obliczeniowej sortowania przez scalanie}
 
 
-Dla uproszczenia możemy założyć, że $n$ jest potęga 2.
+Dla uproszczenia możemy założyć, że $n$ jest potęgą 2.
 
 \begin{description}
 	\item[Dziel.] Znajdujemy środek przedziału i dzielimy w stałym czasie -- $D(n) = \Theta (1)$
@@ -781,21 +781,21 @@ $\frac{n^2}{2} = \omega(n)$, ale $\frac{n^2}{2} \neq \omega(n^2)$.
 \subsection{Standardowe rzędy wielkości funkcji}
 
 \begin{table}[]
-\caption{Popularne klasy złożoności}
+\caption{Popularne rzędy wielkości wraz z nazewnictwem}
 \centering
 \begin{tabular}{@{}ll@{}}
 \toprule
 Klasa & Opis \\ \midrule
-0 & brak potrzebnych operacji \\
-1 & stała \\
-$\log n$ & logarytmiczny \\
-$(\log n)^c$ & polilogarytmiczny \\
-$n$ & liniowy \\
-$n \log n$ & log-liniowy (quasi-liniowy) \\
-$n^2$ & kwadratowy \\
-$n^c$ & wielomianowy \\
-$c^n$ & wykładniczy \\
-$n!$ & silnia \\ \bottomrule
+$\Theta(0)=0$ & brak potrzebnych operacji \\
+$\Theta(1)$ & stała \\
+$\Theta(\log n)$ & logarytmiczny \\
+$\Theta((\log n)^c)$ & polilogarytmiczny \\
+$\Theta(n)$ & liniowy \\
+$\Theta(n \log n)$ & log-liniowy (quasi-liniowy) \\
+$\Theta(n^2)$ & kwadratowy \\
+$\Theta(n^c)$ & wielomianowy \\
+$\Theta(c^n)$ & wykładniczy \\
+$\Theta(n!)$ & silnia \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -828,8 +828,66 @@ $n$ & $O(1)$ & $O(\log n)$ & $O(n)$ & $O(n \log n)$ & $O(n^2)$ & $...$ & $O(n3)$
 \subsection{Stos}
 
 \subsection{Drzewa}
+Drzewo to graf skierowany spójny i acykliczny.
 
 \subsection{Drzewa BST}
+Klasa drzewa i elementu drzewa:
+\begin{minted}{python}
+class Tree():                         # drzewo
+  def __init__(self, root=None):      # konstruktor drzewa, w pythonie dla klas pierwszy argument jest pomijany (to zawsze self), a jedynym "prawdziwym" argumentem jest korzeń (domyślnie pusty)
+    self.root = root                  
+
+class Node:                           # węzeł drzewa
+  def __init__(self, k, left, right, parent=None): # konstruktur (klucz, lewe dziecko, prawe dziecko, rodzic (domyślnie pusty))
+    self.parent = parent              # rodzic 
+    self.key = k                      # wartość przechowywana w tym węźle
+    self.left = left                  # wskaźnik na lewe poddrzewo
+    self.right = right                # wskaźnik na prawe poddrewo
+  def __str__(self):                  # metoda zamieniająca drzewo na łańcuch znaków (przydatna przy printowaniu)
+    return "Jestem węzłem drzewa i przechowuję wartość {}".format(self.key)
+\end{minted}
+Tworzenie drzewa:
+\begin{minted}{python}
+tree = Tree(root=Node(6, 
+                      Node(5, 
+                          Node(2, None, None), 
+                          Node(5, None, None)), 
+                      Node(7, 
+                          None, 
+                          Node(8, None, None))
+            ))
+\end{minted}
+Przechodzenie drzewa inorder:
+\begin{minted}{python}
+def inorderTreeWalk(x, indent=1):
+  if x is not None:
+    inorderTreeWalk(x.left, indent + 1)
+    print(('  ' * indent) + str(x.key))
+    inorderTreeWalk(x.right, indent + 1)
+    
+inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
+\end{minted}
+Szukanie elementu po wartości:
+\begin{minted}{python}
+def treeSearch(x, k):
+  if x is None or k == x.key:
+    return x
+  if k < x.key:
+    return treeSearch(x.left, k)
+  else:
+    return treeSearch(x.right, k)
+    
+nodeWithSeven = treeSearch(tree.root, 7)
+print(nodeWithSeven)
+\end{minted}
+
+\begin{minted}{python}
+	
+\end{minted}
+
+\begin{minted}{python}
+	
+\end{minted}
 
 \subsection{Kodowanie Huffmana}
 
@@ -944,7 +1002,8 @@ Jeżeli założymy, że algorytm takie podziały tworzy takie podziały, to mamy
 	T(n) &= T(n-1) + T(0) + \Theta(n) \\
 	&= T(n-1) + \Theta(n) 
 \end{align*}
-Okazuje się, że w przypadku pesymistycznym algorytm sortowania szybkiego jest asymptotycznie dokładnie oszacowany przez $\Theta(n^2)$.
+Okazuje się, że w przypadku pesymistycznym algorytm sortowania szybkiego jest asymptotycznie dokładnie oszacowany przez $\Theta(n^2)$ -- a sam Quicksort jest tym samym $O(n^2)$.
+Co więcej -- tablica posortowana jest przypadkiem pesymistycznym!
 \begin{proof}
 Korzystając z metody rozwiązywania rekurencji przez podstawianie załóżmy, że $\Theta(n)$ to $c_2 n$ i sprawdźmy, czy $T(n) \leq c_1 n^2$ :
 	\begin{align*}
@@ -955,7 +1014,8 @@ Korzystając z metody rozwiązywania rekurencji przez podstawianie załóżmy, �
 \end{align*}	
 \end{proof}
 
-
+\paragraph{Przypadek optymistyczny.}
+...
 
 \section{Wstęp do teorii grafów i związane z nią algorytmy}
 \subsection{Grafy oraz przechodzenie przez nie}
