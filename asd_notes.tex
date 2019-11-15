@@ -172,9 +172,9 @@ Silnię definiujemy w następujący sposób:
 Już $11!$ to więcej, niż jest ludzi w Polsce.
 \inputminted[linenos]{python}{code/2_factorial_iterative.py}
 
-\subsection{Największy element ciągu}
-Pomijalne. Wejście: lista liczb, wyjście: największy element z listy\footnote{Formalnie definicja jest nieco bardziej skomplikowana -- patrz \url{https://en.wikipedia.org/wiki/Maximal_and_minimal_elements}}.
-\inputminted{python}{code/2_max.py}
+%\subsection{Największy element ciągu}
+%Pomijalne. Wejście: lista liczb, wyjście: największy element z listy\footnote{Formalnie definicja jest nieco bardziej skomplikowana -- patrz \url{https://en.wikipedia.org/wiki/Maximal_and_minimal_elements}}.
+%\inputminted{python}{code/2_max.py}
 
 \section{Listy i iteracje}
 
@@ -1021,6 +1021,42 @@ Zawsze dzielimy tablicę na 4 elementy, kolejno: elementy $\leq x$, elementy $> 
 
 \boxstring{1,2,3,4,5,6,7,8}{8/l}
 
+Pierwsze wywołanie:
+$$\begin{bmatrix} 2 & 8 & 7 & 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 & 7 & 1 & 3 & 5 & 6 \end{bmatrix}  \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}\begin{bmatrix} 7 & 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 & 7 \end{bmatrix} \begin{bmatrix} 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix} 7 & 8 \end{bmatrix} \begin{bmatrix} 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 \end{bmatrix} \begin{bmatrix} 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+Drugie wywołanie:
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix}  1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  \mathbf{3} & \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+Trzecie:
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 1 & 2 \end{bmatrix} \begin{bmatrix} \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+Czwarte na lewo od 1 puste.
+Piąte na prawo od 2 puste.
+Szóste na prawo od 3 puste.
+Siódme:
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} \mathbf{8} \end{bmatrix}$$
+Ósme:
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} \mathbf{7} \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+Dziewiąte, dziesiąte i jedenaste puste.
+Finalnie:
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} & \mathbf{5} & \mathbf{6} & \mathbf{7} & \mathbf{8} \end{bmatrix}$$
 
 \paragraph{Przypadek pesymistyczny.} 
 Algorytm działa najwolniej, gdy procedura tworzy jeden obszar złożony z $n-1$ elementów, a drugi jest pusty.
