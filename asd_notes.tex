@@ -1032,9 +1032,10 @@ stack
 
 
 \subsection{Kolejka}
+Kolejka jest \emph{FIFO}
 Dodawanie do kolejki to \emph{enqueue} i jest $\Theta(1)$, a usuwanie to \emph{dequeue} i również jest $\Theta(1)$.
 Dostęp i wyszukiwanie są $\Theta(n)$ w przypadku średnim.
-
+Kolejka ma dwa wskaźniki -- tail i head.
 \begin{minted}{python}
 from collections import deque
 queue = deque(["Eric", "John", "Michael"])
@@ -1048,11 +1049,18 @@ queue                           # Remaining queue in order of arrival
 deque(['Michael', 'Terry', 'Graham'])
 \end{minted}
 
+\subsection{Lista z dowiązaniami}
+Lista składa z elementów listy, z czego jeden jest głową (jeżeli nie ma poprzednika), a jeden ogonem (jeżeli nie ma następnika).
+Lista przechowuje wartość i wskaźnik na następnik (oraz na poprzednik, jeżeli jest podwójnie dowiązana).
+Dostęp i wyszukiwanie jest $\Theta(n)$, a wstawianie i usuwanie jest $\Theta(1)$.
 
 \subsection{Drzewa}
 Drzewo to graf skierowany spójny i acykliczny.
 
 \subsection{Drzewa BST}
+Dla drzewa BST dostęp, wyszukiwanie, wstawanie i usuwanie jest $\Theta(\log n)$, a w najgorszym przypadku mamy $\Theta(n)$.
+Zasada tworzenia drzew: jeżeli $x$ jest węzłem drzewa, a $y$ jest jego lewym dzieckiem, to $y.key \leq x.key$.
+Jeżeli $y$ jest jego prawym dzieckiem, to $y.key \geq x.key$.
 Klasa drzewa i elementu drzewa:
 \begin{minted}{python}
 class Tree():                         # drzewo
