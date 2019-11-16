@@ -701,6 +701,172 @@ $\Theta(1)$ jest pomijalne ze względu na $\Theta(n)$.
 Wysokość tego drzewa to $\log_2 n$, czyli jest $\log_2 n + 1 $ poziomów.
 Każdy poziom kosztuje $cn$, a więc czas działania to $cn(\log_2 n + 1) = cn \log_2 n + cn = \Theta(n \log n)$.
 
+
+\subsection{Quicksort}
+\begin{algorithm}
+    \caption{Sortowanie szybkie (przykład z książki -- liczymy od 1!)}
+    \label{alg:quicksort}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Quicksort}{$A, p, r$} 
+            	\If{$p < r$}
+            		\State $q \gets \Call{Partition}{A, p, r}$
+            		\State $\Call{Quicksort}{A, p, q-1}$
+            		\State $\Call{Quicksort}{A, q+1, r}$
+            	\EndIf
+        \EndFunction
+        
+        	\Function{Partition}{$A, p, r$} \algcost{}{$\Theta(n)$}
+            	\State $x \gets A[r]$
+            	\State $i \gets p - 1$
+            	\For{$j \gets p$  \textbf{to} $r - 1$ } \algcost{$c$}{$n=r-p+1$}
+            		\If{$A[j] \leq x$}
+	            		\State $i \gets i +1$ 
+	            		\State zamień $A[i]$ z $A[j]$
+	            	\EndIf
+            	\EndFor
+            	\State zamień $A[i+1]$ z $A[r]$
+            	\Return $i +1$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{minted}{python}
+def quicksort(A, p, r):
+  print('Entering QuickSort!')
+  if p < r:
+    q = partition(A, p, r)
+    quicksort(A, p, q-1)
+    quicksort(A, q+1, r)
+  else:
+    print("p >= r ({} >= {}), nothing to sort here...".format(p, r))
+    
+def partition(A, p, r):
+  print('Pivot: {}, p={}, r={}\t Array: \t{}'.format(A[r], p, r, A))
+  x = A[r]
+  i = p - 1
+  for j in range(p, r):
+    if A[j] <= x:
+      i += 1
+      A[i], A[j] = A[j], A[i]
+    print('\t\t\t Subarray:\t{}'.format(A[p:r]))
+  A[i+1], A[r] = A[r], A[i+1]
+  return i + 1
+  
+a = [2, 8, 7, 1, 3 ,5, 6, 4]
+quicksort(a, 0, len(a)-1)
+print(a)	
+\end{minted}
+
+Zawsze dzielimy tablicę na 4 elementy, kolejno: elementy $\leq x$, elementy $> x$, dowolne, oraz $x$.
+
+\newcommand{\boxstring}[2]% numbers, specifications
+{   \begin{tikzpicture}
+    [ l/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=lime!70!gray},
+        o/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=olive!50},
+        r/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=magenta!50!black, text=white, font=\bf, yshift=1.5mm},
+        b/.style={minimum width=8mm, minimum height=8mm, rounded corners=2mm, draw=black, fill=magenta!50!black, text=white, font=\bf},
+        g/.style={minimum width=8mm, minimum height=8mm, rounded corners=2mm, draw=black, fill=gray, text=white, font=\bf}, 
+    ]
+        \xdef\maxindex{0}
+        \foreach \rep/\opt in {#2}
+        {   \pgfmathtruncatemacro{\maxin}{\maxindex+\rep}
+            \xdef\minindex{\maxindex}
+            \xdef\maxindex{\maxin}
+            \foreach \x [count=\c] in {#1}
+            {   \pgfmathtruncatemacro{\drawbool}{and(\c>\minindex,\c<=\maxindex) ? 1 : 0}
+                \ifthenelse{\drawbool=1}
+                {   \node[\opt] at (\c,0) {\x};
+                }{}
+            }
+        }
+    \end{tikzpicture}
+    \bigskip
+}
+
+\textbf{Krok 1:} wybieramy $A[r]=4$ (ostatni element):
+
+\boxstring{2, 8, 7, 1, 3, 5, 6, 4}{7/o,1/r}
+
+\textbf{Krok 2:} liczby mniejsze od 4 idą na lewo, a większe na prawo
+
+\boxstring{2, 1, 3, 4, 7, 5, 6, 8}{3/o,1/g,4/o}
+
+\textbf{Krok 3:} Powtarzamy krok 1 dla dwóch podlist
+
+\boxstring{2, 1, 3, 4, 7, 5, 6, 8}{2/o,1/r,1/g,3/o, 1/r}
+
+\textbf{Krok 4:} Powtarzamy krok 1 dla dwóch kolejnych podlist
+
+\boxstring{2, 1, 3, 4, 7, 5, 6, 8}{1/o,1/r,2/g,2/o,1/r, 1/g}
+
+\textbf{Krok 5:} Pozostały nam same jednoelementowe listy, których nie trzeba sortować
+
+\boxstring{1, 2, 3, 4, 5, 6, 7, 8}{1/g,1/o,2/g,1/o,1/g,1/o, 1/g}
+
+\textbf{Krok 6:} Gotowe!
+
+\boxstring{1,2,3,4,5,6,7,8}{8/l}
+
+Pierwsze wywołanie:
+$$\begin{bmatrix} 2 & 8 & 7 & 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 & 7 & 1 & 3 & 5 & 6 \end{bmatrix}  \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}\begin{bmatrix} 7 & 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 & 7 \end{bmatrix} \begin{bmatrix} 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix} 7 & 8 \end{bmatrix} \begin{bmatrix} 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 \end{bmatrix} \begin{bmatrix} 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+Drugie wywołanie:
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix}  1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  \mathbf{3} & \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+Trzecie:
+$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 1 & 2 \end{bmatrix} \begin{bmatrix} \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+$$\begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
+Czwarte na lewo od 1 puste.
+Piąte na prawo od 2 puste.
+Szóste na prawo od 3 puste.
+Siódme:
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} \mathbf{8} \end{bmatrix}$$
+Ósme:
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} \mathbf{7} \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
+Dziewiąte, dziesiąte i jedenaste puste.
+Finalnie:
+$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} & \mathbf{5} & \mathbf{6} & \mathbf{7} & \mathbf{8} \end{bmatrix}$$
+
+\paragraph{Przypadek pesymistyczny.} 
+Algorytm działa najwolniej, gdy procedura tworzy jeden obszar złożony z $n-1$ elementów, a drugi jest pusty.
+Jeżeli założymy, że algorytm takie podziały tworzy takie podziały, to mamy
+\begin{align*}
+	T(n) &= T(n-1) + T(0) + \Theta(n) \\
+	&= T(n-1) + \Theta(n) 
+\end{align*}
+Okazuje się, że w przypadku pesymistycznym algorytm sortowania szybkiego jest asymptotycznie dokładnie oszacowany przez $\Theta(n^2)$ -- a sam Quicksort jest tym samym $O(n^2)$.
+Co więcej -- tablica posortowana jest przypadkiem pesymistycznym!
+\begin{proof}
+Korzystając z metody rozwiązywania rekurencji przez podstawianie załóżmy, że $\Theta(n)$ to $c_2 n$ i sprawdźmy, czy $T(n) \leq c_1 n^2$ :
+	\begin{align*}
+	T(n) &= T(n-1) + c_2 n \\
+	&\leq c_1(n-1)^2 + c_2 n \\
+	&= c_1n^2 - 2c_1 n + c_1 + c_2 n \qquad (2c_1 > c_2, \quad n \geq c_1 / (2c_1-c_2))\\
+	&\leq c_1 n^2 = \Theta(n^2)
+\end{align*}	
+\end{proof}
+
+\paragraph{Przypadek optymistyczny.}
+...
+
+
 \section{Rzędy wielkości funkcji}
 
 \subsection{Notacja asympotyczna}
@@ -917,169 +1083,6 @@ print(nodeWithSeven)
 
 W kopcach typu \emph{max} mamy dla każdego $i$, które nie jest korzeniem $A[\Call{Parent}{i} \geq A[i]$. Kopiec mający $n$ elementów ma wysokość $\Theta (\log_2 n)$
 
-\subsection{Quicksort}
-\begin{algorithm}
-    \caption{Sortowanie szybkie (przykład z książki -- liczymy od 1!)}
-    \label{alg:quicksort}
-    \begin{algorithmic}[1] % The number tells where the line numbering should start
-        \Function{Quicksort}{$A, p, r$} 
-            	\If{$p < r$}
-            		\State $q \gets \Call{Partition}{A, p, r}$
-            		\State $\Call{Quicksort}{A, p, q-1}$
-            		\State $\Call{Quicksort}{A, q+1, r}$
-            	\EndIf
-        \EndFunction
-        
-        	\Function{Partition}{$A, p, r$} \algcost{}{$\Theta(n)$}
-            	\State $x \gets A[r]$
-            	\State $i \gets p - 1$
-            	\For{$j \gets p$  \textbf{to} $r - 1$ } \algcost{$c$}{$n=r-p+1$}
-            		\If{$A[j] \leq x$}
-	            		\State $i \gets i +1$ 
-	            		\State zamień $A[i]$ z $A[j]$
-	            	\EndIf
-            	\EndFor
-            	\State zamień $A[i+1]$ z $A[r]$
-            	\Return $i +1$
-        \EndFunction
-    \end{algorithmic}
-\end{algorithm}
-
-\begin{minted}{python}
-def quicksort(A, p, r):
-  print('Entering QuickSort!')
-  if p < r:
-    q = partition(A, p, r)
-    quicksort(A, p, q-1)
-    quicksort(A, q+1, r)
-  else:
-    print("p >= r ({} >= {}), nothing to sort here...".format(p, r))
-    
-def partition(A, p, r):
-  print('Pivot: {}, p={}, r={}\t Array: \t{}'.format(A[r], p, r, A))
-  x = A[r]
-  i = p - 1
-  for j in range(p, r):
-    if A[j] <= x:
-      i += 1
-      A[i], A[j] = A[j], A[i]
-    print('\t\t\t Subarray:\t{}'.format(A[p:r]))
-  A[i+1], A[r] = A[r], A[i+1]
-  return i + 1
-  
-a = [2, 8, 7, 1, 3 ,5, 6, 4]
-quicksort(a, 0, len(a)-1)
-print(a)	
-\end{minted}
-
-Zawsze dzielimy tablicę na 4 elementy, kolejno: elementy $\leq x$, elementy $> x$, dowolne, oraz $x$.
-
-\newcommand{\boxstring}[2]% numbers, specifications
-{   \begin{tikzpicture}
-    [ l/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=lime!70!gray},
-        o/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=olive!50},
-        r/.style={minimum width=6mm, minimum height=6mm, rounded corners=1.5mm, draw=black, fill=magenta!50!black, text=white, font=\bf, yshift=1.5mm},
-        b/.style={minimum width=8mm, minimum height=8mm, rounded corners=2mm, draw=black, fill=magenta!50!black, text=white, font=\bf},
-        g/.style={minimum width=8mm, minimum height=8mm, rounded corners=2mm, draw=black, fill=gray, text=white, font=\bf}, 
-    ]
-        \xdef\maxindex{0}
-        \foreach \rep/\opt in {#2}
-        {   \pgfmathtruncatemacro{\maxin}{\maxindex+\rep}
-            \xdef\minindex{\maxindex}
-            \xdef\maxindex{\maxin}
-            \foreach \x [count=\c] in {#1}
-            {   \pgfmathtruncatemacro{\drawbool}{and(\c>\minindex,\c<=\maxindex) ? 1 : 0}
-                \ifthenelse{\drawbool=1}
-                {   \node[\opt] at (\c,0) {\x};
-                }{}
-            }
-        }
-    \end{tikzpicture}
-    \bigskip
-}
-
-\textbf{Krok 1:} wybieramy $A[r]=4$ (ostatni element):
-
-\boxstring{2, 8, 7, 1, 3, 5, 6, 4}{7/o,1/r}
-
-\textbf{Krok 2:} liczby mniejsze od 4 idą na lewo, a większe na prawo
-
-\boxstring{2, 1, 3, 4, 7, 5, 6, 8}{3/o,1/g,4/o}
-
-\textbf{Krok 3:} Powtarzamy krok 1 dla dwóch podlist
-
-\boxstring{2, 1, 3, 4, 7, 5, 6, 8}{2/o,1/r,1/g,3/o, 1/r}
-
-\textbf{Krok 4:} Powtarzamy krok 1 dla dwóch kolejnych podlist
-
-\boxstring{2, 1, 3, 4, 7, 5, 6, 8}{1/o,1/r,2/g,2/o,1/r, 1/g}
-
-\textbf{Krok 5:} Pozostały nam same jednoelementowe listy, których nie trzeba sortować
-
-\boxstring{1, 2, 3, 4, 5, 6, 7, 8}{1/g,1/o,2/g,1/o,1/g,1/o, 1/g}
-
-\textbf{Krok 6:} Gotowe!
-
-\boxstring{1,2,3,4,5,6,7,8}{8/l}
-
-Pierwsze wywołanie:
-$$\begin{bmatrix} 2 & 8 & 7 & 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 & 7 & 1 & 3 & 5 & 6 \end{bmatrix}  \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}\begin{bmatrix} 7 & 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 8 & 7 \end{bmatrix} \begin{bmatrix} 1 & 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix} 7 & 8 \end{bmatrix} \begin{bmatrix} 3 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 \end{bmatrix} \begin{bmatrix} 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} 8 & 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 4 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 & 3 \end{bmatrix} \begin{bmatrix} \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-Drugie wywołanie:
-$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix}  1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  3 \end{bmatrix} \begin{bmatrix} \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-$$\begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix}  \mathbf{3} & \mathbf{4}  \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-Trzecie:
-$$\begin{bmatrix} 2 \end{bmatrix} \begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-$$\begin{bmatrix} 1 & 2 \end{bmatrix} \begin{bmatrix} \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-$$\begin{bmatrix} 1 \end{bmatrix} \begin{bmatrix} \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 & 8 \end{bmatrix}$$
-Czwarte na lewo od 1 puste.
-Piąte na prawo od 2 puste.
-Szóste na prawo od 3 puste.
-Siódme:
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} 8 \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 & 6 \end{bmatrix} \begin{bmatrix} \mathbf{8} \end{bmatrix}$$
-Ósme:
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 & 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} 7 \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} \end{bmatrix} \begin{bmatrix} 5 \end{bmatrix} \begin{bmatrix} \mathbf{7} \end{bmatrix} \begin{bmatrix} 6 \end{bmatrix} \begin{bmatrix}\mathbf{8} \end{bmatrix}$$
-Dziewiąte, dziesiąte i jedenaste puste.
-Finalnie:
-$$\begin{bmatrix} \mathbf{1} & \mathbf{2} & \mathbf{3} & \mathbf{4} & \mathbf{5} & \mathbf{6} & \mathbf{7} & \mathbf{8} \end{bmatrix}$$
-
-\paragraph{Przypadek pesymistyczny.} 
-Algorytm działa najwolniej, gdy procedura tworzy jeden obszar złożony z $n-1$ elementów, a drugi jest pusty.
-Jeżeli założymy, że algorytm takie podziały tworzy takie podziały, to mamy
-\begin{align*}
-	T(n) &= T(n-1) + T(0) + \Theta(n) \\
-	&= T(n-1) + \Theta(n) 
-\end{align*}
-Okazuje się, że w przypadku pesymistycznym algorytm sortowania szybkiego jest asymptotycznie dokładnie oszacowany przez $\Theta(n^2)$ -- a sam Quicksort jest tym samym $O(n^2)$.
-Co więcej -- tablica posortowana jest przypadkiem pesymistycznym!
-\begin{proof}
-Korzystając z metody rozwiązywania rekurencji przez podstawianie załóżmy, że $\Theta(n)$ to $c_2 n$ i sprawdźmy, czy $T(n) \leq c_1 n^2$ :
-	\begin{align*}
-	T(n) &= T(n-1) + c_2 n \\
-	&\leq c_1(n-1)^2 + c_2 n \\
-	&= c_1n^2 - 2c_1 n + c_1 + c_2 n \qquad (2c_1 > c_2, \quad n \geq c_1 / (2c_1-c_2))\\
-	&\leq c_1 n^2 = \Theta(n^2)
-\end{align*}	
-\end{proof}
-
-\paragraph{Przypadek optymistyczny.}
-...
 
 \section{Wstęp do teorii grafów i związane z nią algorytmy}
 \subsection{Grafy oraz przechodzenie przez nie}
