@@ -729,7 +729,7 @@ Często pisze się po prostu $O(n)$ w tym znaczeniu, choć jest to nieprecyzyjn
 
 Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem górnym} dla $f(n)$, jeżeli:
 $$
-O(g(n)) = \{ f(n): \exists_{c, c, n_0>0} \forall_{n \geq n_0} \left(0 \leq f(n) \leq c g(n) \right) \}
+O(g(n)) = \{ f(n): \exists_{c, n_0>0} \forall_{n \geq n_0} \left(0 \leq f(n) \leq c g(n) \right) \}
 $$
 Zauważmy, że $f(n)=\Theta (g(n)) \implies f(n)=O(g(n))$.
 Np. każda funkcja liniowa zawiera się w $O(n^2)$.
@@ -737,7 +737,7 @@ Górne oszacowanie to w istocie szacowanie przypadku pesymistycznego -- algorytm
 
 Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem dolnym} dla $f(n)$, jeżeli:
 $$
-\Omega(g(n)) = \{ f(n): \exists_{c, c, n_0>0} \forall_{n \geq n_0} \left(0 \leq c g(n) \leq f(n) \right) \}
+\Omega(g(n)) = \{ f(n): \exists_{c, n_0>0} \forall_{n \geq n_0} \left(0 \leq c g(n) \leq f(n) \right) \}
 $$
 Dolne oszacowanie to w istocie szacowanie przypadku optymistycznego -- algorytm nie zadziała lepiej niż $cg(n)$.
 Zauważmy, że $f(n)=\Theta (g(n)) \implies f(n)=\Omega(g(n))$.
@@ -795,7 +795,8 @@ $\Theta(n \log n)$ & log-liniowy (quasi-liniowy) \\
 $\Theta(n^2)$ & kwadratowy \\
 $\Theta(n^c)$ & wielomianowy \\
 $\Theta(c^n)$ & wykładniczy \\
-$\Theta(n!)$ & silnia \\ \bottomrule
+$\Theta(n!)$ & silnia \\ 
+$\Theta(n^n)$ & ... \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -805,13 +806,13 @@ $\Theta(n!)$ & silnia \\ \bottomrule
 \centering
 \begin{tabular}{@{}rrrrrrrr@{}}
 \toprule
-$n$ & $O(1)$ & $O(\log n)$ & $O(n)$ & $O(n \log n)$ & $O(n^2)$ & $...$ & $O(n3)$ \\ \midrule
-1 & 1 & 1 & 1 & 1 & 1 & ... & 1 \\
-2 & 1 & 1 & 2 & 2 & 4 & ... & 8 \\
-4 & 1 & 2 & 4 & 8 & 16 & ... & 64 \\
-8 & 1 & 3 & 8 & 24 & 64 & ... & 512 \\
-16 & 1 & 4 & 16 & 64 & 256 & ... & 4,096 \\
-1,024 & 1 & 10 & 1,024 & 10,240 & 1,048,576 & ... & 1,073,741,824 \\
+$n$ & $O(1)$ & $O(\log n)$ & $O(n)$ & $O(n \log n)$ & $O(n^2)$ & $ n^2 +100n$ & $O(n3)$ \\ \midrule
+1 & 1 & 1 & 1 & 1 & 1 & 101 & 1 \\
+2 & 1 & 1 & 2 & 2 & 4 & 204 & 8 \\
+4 & 1 & 2 & 4 & 8 & 16 & 416 & 64 \\
+8 & 1 & 3 & 8 & 24 & 64 & 864 & 512 \\
+16 & 1 & 4 & 16 & 64 & 256 & 1,856 & 4,096 \\
+1,024 & 1 & 10 & 1,024 & 10,240 & 1,048,576 & 1,150,976 & 1,073,741,824 \\
 \bottomrule
 \end{tabular}
 \end{table}
