@@ -1120,7 +1120,26 @@ print(nodeWithSeven)
 \end{minted}
 
 \subsection{Kodowanie Huffmana}
+Algorytm zachłanny
 
+\begin{algorithm}
+    \caption{Kodowanie Huffmana}
+    \label{alg:huffman}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Huffman}{$C$} 
+        		\State $n \gets |C|$
+        		\State $Q = C$
+            	\For{$i \gets 1$  \textbf{to} $n - 1$ }
+            		\State $z \gets$ nowy węzeł
+            		\State $z.left \gets x \gets \Call{ExtractMin}{Q}$
+            		\State $z.right \gets y \gets \Call{ExtractMin}{Q}$
+            		\State $z.freq \gets x.freq + y.freq$
+            		\State $\Call{Insert}{Q, z}$
+            	\EndFor
+            	\Return $\Call{ExtractMin}{Q}$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 \section{Algorytmy sortowania}
 
