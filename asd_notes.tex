@@ -1001,10 +1001,53 @@ $n$ & $O(1)$ & $O(\log n)$ & $O(n)$ & $O(n \log n)$ & $O(n^2)$ & $ n^2 +100n$ & 
 	\caption{Wizualizacja różnych klas złożoności funkcji. Źródło: Stack Overflow}
 \end{figure}
 
+
+
 \section{Struktury danych}
-\subsection{Kolejka}
+Podstawowe operacje na kolekcjach: $\Call{Search}{S, x}$ -- wyszukiwanie, $\Call{Insert}{S, x}$ -- dodanie nowego elementu, $\Call{Delete}{S, x}$ -- usunięcie, $\Call{Minimum}{S}$, $\Call{Maximum}{S}$, $\Call{Successor}{S, x}$ -- następny element w liniowo uporządkowanym zbiorze, $\Call{Predecessor}{S, x}$ -- poprzedni element w liniowo uporządkowanym zbiorze.
 
 \subsection{Stos}
+
+Stos jest \emph{LIFO}. Operacje push, pop -- $\Theta(1)$. 
+Dostęp i wyszukiwanie są $\Theta(n)$ w przypadku średnim.
+Jeżeli stos jest większy niż $n$ to powiemy, że jest przepełniony.
+
+\begin{minted}{python}
+stack = [3, 4, 5]
+stack.append(6). # jak push
+stack.append(7)
+stack
+# [3, 4, 5, 6, 7]
+stack.pop()
+# 7
+stack
+# [3, 4, 5, 6]
+stack.pop()
+# 6
+stack.pop()
+# 5
+stack
+# [3, 4]
+\end{minted}
+
+
+\subsection{Kolejka}
+Dodawanie do kolejki to \emph{enqueue} i jest $\Theta(1)$, a usuwanie to \emph{dequeue} i również jest $\Theta(1)$.
+Dostęp i wyszukiwanie są $\Theta(n)$ w przypadku średnim.
+
+\begin{minted}{python}
+from collections import deque
+queue = deque(["Eric", "John", "Michael"])
+queue.append("Terry")           # Terry arrives
+queue.append("Graham")          # Graham arrives
+queue.popleft()                 # The first to arrive now leaves
+# 'Eric'
+queue.popleft()                 # The second to arrive now leaves
+# 'John'
+queue                           # Remaining queue in order of arrival
+deque(['Michael', 'Terry', 'Graham'])
+\end{minted}
+
 
 \subsection{Drzewa}
 Drzewo to graf skierowany spójny i acykliczny.
