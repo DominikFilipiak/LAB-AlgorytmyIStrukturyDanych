@@ -1055,7 +1055,7 @@ Lista przechowuje wartość i wskaźnik na następnik (oraz na poprzednik, jeże
 Dostęp i wyszukiwanie jest $\Theta(n)$, a wstawianie i usuwanie jest $\Theta(1)$.
 
 \subsection{Drzewa}
-Drzewo to graf skierowany spójny i acykliczny.
+Drzewo to niezorientowany graf spójny i acykliczny.
 
 \subsection{Drzewa BST}
 Dla drzewa BST dostęp, wyszukiwanie, wstawanie i usuwanie jest $\Theta(\log n)$, a w najgorszym przypadku mamy $\Theta(n)$.
@@ -1166,8 +1166,11 @@ Algorytm zachłanny
 W kopcach typu \emph{max} mamy dla każdego $i$, które nie jest korzeniem $A[\Call{Parent}{i} \geq A[i]$. Kopiec mający $n$ elementów ma wysokość $\Theta (\log_2 n)$
 
 
-\section{Wstęp do teorii grafów i związane z nią algorytmy}
+\section{Wstęp do teorii grafów}
 \subsection{Grafy oraz przechodzenie przez nie}
+
+Graf $G$ definiujemy jako $G=(V, E)$, gdzie $V$ to zbiór krawędzi, a $E$ -- zbiór wierzchołków.
+
 \subsection{Algorytm Dijkstry}
 \subsection{Algorytm Prima}
 
