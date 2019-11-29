@@ -33,7 +33,7 @@
 
 
 
-\title{Algorytmy i struktury danych -- notatki do kursu}
+\title{Algorytmy i struktury danych (15h) -- notatki do kursu}
 \author{mgr. inż Dominik Filipiak}
 \date{Rok akademicki 2019/2020}
 
@@ -1228,12 +1228,97 @@ Przykład: \url{https://people.ok.ubc.ca/ylucet/DS/Huffman.html}
 
 
 \section{Wstęp do teorii grafów}
-\subsection{Grafy oraz przechodzenie przez nie}
+\subsection{Reprezentacja grafów}
 
 Graf $G$ definiujemy jako $G=(V, E)$, gdzie $V$ to zbiór krawędzi, a $E$ -- zbiór wierzchołków.
+\paragraph{Listy sąsiedztwa.} 
+Jest to tablica zawierająca $|V|$ list, a suma długości wszystkich list to $|E|$.
+Oczywiście można przechowywać informacje o np. wagach.
+
+\paragraph{Macierz sąsiedztwa.} 
+Wymaga $\Theta(|V|^2)$
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/graphs}
+	\caption{Reprezentacja grafu nieskierowanego jako lista sąsiedztwa oraz macierz sąsiedztwa. Źródło: Cormen et al.}
+\end{figure}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/graphs_directed}
+	\caption{Reprezentacja grafu skierowanego jako lista sąsiedztwa oraz macierz sąsiedztwa. Źródło: Cormen et al.}
+\end{figure}
+
+
+\subsection{Przechodzenie przez graf}
+
+\begin{algorithm}
+    \caption{Przeszukiwanie wszerz}
+    \label{alg:bfs}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{BFS}{$G, s$} \algcost{}{//$O(|V|+|E|)$,  $s$ -- start}
+        		\For{ \textbf{each} $u \in G.V - \{s\}$}
+            		\State $u.color \gets$ \texttt{biały}
+            		\State $u.d \gets \infty$
+            		\State $u.\pi \gets$ \texttt{NIL} 
+            	\EndFor
+            	\State $s.color \gets$ \texttt{szary}
+            	\State $s.d \gets 0$
+            	\State $s.\pi \gets$ \texttt{NIL} 
+            	\State $Q \gets \varnothing $
+            	\State $\Call{Enqueue}{Q, s}$
+            	\While{$Q \neq \varnothing$}
+            		\State $\Call{Dequeue}{Q}$
+            		\For{\textbf{each} $v \in G.Adj[u]$}
+            			\If{$v.color = \texttt{biały}$}
+            				\State $v.color \gets \texttt{szary}$
+            				\State $v.d \gets u.d + 1$
+            				\State $v.\pi \gets u$
+            				\State $\Call{Enqueue}{Q, v}$
+            			\EndIf
+            		\EndFor
+            		\State $u.color \gets \texttt{czarny}$
+            	\EndWhile
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/bfs}
+	\caption{BFS. Źródło: Cormen et al.}
+\end{figure}
+
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/dfs}
+	\caption{DFS. Źródło: Cormen et al.}
+\end{figure}
+
+\subsection{Minimalne drzewo rozpinające}
+
+\paragraph{Algorytm Kruskala.}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/kruskal1}
+	\caption{Algorytm Kruskala. Źródło: Cormen et al.}
+\end{figure}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/kruskal2}
+	\caption{Algorytm Kruskala. Źródło: Cormen et al.}
+\end{figure}
+
+\paragraph{Algorytm Prima.}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/prim}
+	\caption{Algorytm Prima. Źródło: Cormen et al.}
+\end{figure}
 
 \subsection{Algorytm Dijkstry}
-\subsection{Algorytm Prima}
 
 \section{Wyszukiwanie wzorca w tekście}
 
