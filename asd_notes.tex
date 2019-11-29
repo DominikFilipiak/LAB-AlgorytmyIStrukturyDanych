@@ -1253,6 +1253,8 @@ Wymaga $\Theta(|V|^2)$
 
 \subsection{Przechodzenie przez graf}
 
+\paragraph{Przeszukiwanie wszerz}
+
 \begin{algorithm}
     \caption{Przeszukiwanie wszerz}
     \label{alg:bfs}
@@ -1290,14 +1292,51 @@ Wymaga $\Theta(|V|^2)$
 	\caption{BFS. Źródło: Cormen et al.}
 \end{figure}
 
+\paragraph{Przeszukiwanie wgłąb}
+
+\begin{algorithm}
+    \caption{Przeszukiwanie wgłąb}
+    \label{alg:dfs}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{DFS}{$G$} \algcost{}{//$O(|V|+|E|)$}
+        		\For{ \textbf{each} $u \in G.V$}
+            		\State $u.color \gets$ \texttt{biały}
+            		\State $u.\pi \gets$ \texttt{NIL} 
+            	\EndFor
+            	\State $time \gets 0$
+            	\For{ \textbf{each} $u \in G.V$}
+            		\If{$u.color =$ \texttt{biały}}
+            			\State $\Call{DFS-Visit}{G, u}$
+            		\EndIf
+            	\EndFor
+        \EndFunction
+        \Function{DFS-Visit}{$G, u$}            	
+        		\State $time \gets time + 1$
+        		\State $u.d \gets time$
+            	\State $u.color \gets$ \texttt{szary}
+            \For{ \textbf{each} $u \in G.Adj[u]$}
+        			\If{$v.color = \texttt{biały}$}
+        				\State $v.\pi \gets u$
+        				\State $\Call{DFS-Visit}{G, v}$
+        			\EndIf         
+            	\EndFor
+            	\State $u.color \gets \texttt{czarny}$
+            	\State $time \gets time + 1$
+            	\State $u.f \gets time$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=.9\textwidth]{figures/dfs}
-	\caption{DFS. Źródło: Cormen et al.}
+	\caption{DFS (na wierzchołkach czas odwiedzenia/czas przetworzenia, krawędzie niedrzewowe: B -- back, C -- cross, F -- forward. Źródło: Cormen et al.}
 \end{figure}
 
+
 \subsection{Minimalne drzewo rozpinające}
+Problem minimalnego drzewa rozpinającego to problem znalezienia takiego zbioru $T \subseteq E$, dla którego $w(T) = \sum_{(u,v) \in T} w(u,v)$ jest najmniejsze (gdzie $w(u,v)$ to waga krawędzi między $u$ i $v$).
+Przykład: położenie kabla pod systemem drogowym.
 
 \paragraph{Algorytm Kruskala.}
 \begin{figure}[htpb]
@@ -1308,7 +1347,7 @@ Wymaga $\Theta(|V|^2)$
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=.9\textwidth]{figures/kruskal2}
-	\caption{Algorytm Kruskala. Źródło: Cormen et al.}
+	\caption{Algorytm Kruskala (c.d.). Źródło: Cormen et al.}
 \end{figure}
 
 \paragraph{Algorytm Prima.}
