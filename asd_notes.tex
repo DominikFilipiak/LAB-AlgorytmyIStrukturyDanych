@@ -1120,7 +1120,7 @@ print(nodeWithSeven)
 \end{minted}
 
 \subsection{Kodowanie Huffmana}
-Algorytm zachłanny na obliczanie kodu prefiksowego, tj. takiego, gdzie żadne słowo kodowe nie jest prefiksem innego słowa kodowego.
+Algorytm zachłanny (dokonujący wyboru, który w danej chwili jest najkorzystniejszy) na obliczanie kodu prefiksowego, tj. takiego, gdzie żadne słowo kodowe nie jest prefiksem innego słowa kodowego.
 
 \begin{table}[htpb]
 \caption{Kodowanie znaków. Źródło: Cormen et al.}
@@ -1135,13 +1135,21 @@ Słowo kodowe o zmiennej długości & 0 & 101 & 100 & 111 & 1101 & 1100 \\
 \end{tabular}
 \end{table}
 
+Aby przechować plik stałą szerokością:
+$$ 3 \cdot (45 + 13 + 12 + 16 + 9 + 5) \cdot 1000  =3 \cdot 100 \cdot 1000 = 300000 $$
+W przypadku szerokości zmiennej:
+$$ (45 \cdot 1 + 13 \cdot 3 + 12 \cdot 3 + 16 \cdot 3 + 9 \cdot 4+ 5 \cdot 4) \cdot 1000 = 224000$$
+Tym samym oszczędzamy ok. 25\%!
+
+
+
 \begin{algorithm}
     \caption{Kodowanie Huffmana}
     \label{alg:huffman}
     \begin{algorithmic}[1] % The number tells where the line numbering should start
-        \Function{Huffman}{$C$} \algcost{}{$O(n \log n)$}
+        \Function{Huffman}{$C$} \algcost{}{// $O(n \log n)$}
         		\State $n \gets |C|$
-        		\State $Q = C$
+        		\State $Q = C$ \algcost{}{// Kolejka priorytetowa}
             	\For{$i \gets 1$  \textbf{to} $n - 1$ }
             		\State $z \gets$ nowy węzeł
             		\State $z.left \gets x \gets \Call{ExtractMin}{Q}$
@@ -1153,6 +1161,7 @@ Słowo kodowe o zmiennej długości & 0 & 101 & 100 & 111 & 1101 & 1100 \\
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
+
 
 \begin{figure}[h]
 	\centering
@@ -1215,33 +1224,8 @@ Słowo kodowe o zmiennej długości & 0 & 101 & 100 & 111 & 1101 & 1100 \\
 	\caption{Drzewo odpowiadające kodom}
 \end{figure}
 
-%
-%
-%
-%\section{Algorytmy sortowania}
-%
-%\subsection{Sortowanie bąbelkowe}
-%
-%\subsection{Heapsort -- sortowanie przez kopcowanie}
-%
-%\begin{algorithm}
-%    \caption{Sortowanie szybkie (przykład z książki -- liczymy od 1!)}
-%    \label{alg:quicksort}
-%    \begin{algorithmic}[1] % The number tells where the line numbering should start
-%        \Function{Parent}{$i$} 
-%            \State \Return $\lfloor i/2 \rfloor$
-%        \EndFunction
-%        	\Function{Left}{$i$} 
-%            	\State \Return $2i$
-%        \EndFunction
-%        	\Function{Right}{$i$} 
-%            	\State \Return $2i+1$
-%        \EndFunction
-%    \end{algorithmic}
-%\end{algorithm}
-%
-%W kopcach typu \emph{max} mamy dla każdego $i$, które nie jest korzeniem $A[\Call{Parent}{i} \geq A[i]$. Kopiec mający $n$ elementów ma wysokość $\Theta (\log_2 n)$
-%
+Przykład: \url{https://people.ok.ubc.ca/ylucet/DS/Huffman.html}
+
 
 \section{Wstęp do teorii grafów}
 \subsection{Grafy oraz przechodzenie przez nie}
