@@ -1120,7 +1120,20 @@ print(nodeWithSeven)
 \end{minted}
 
 \subsection{Kodowanie Huffmana}
-Algorytm zachłanny
+Algorytm zachłanny na obliczanie kodu prefiksowego, tj. takiego, gdzie żadne słowo kodowe nie jest prefiksem innego słowa kodowego.
+
+\begin{table}[]
+\caption{Kodowanie znaków. Źródło: Cormen et al.}
+\centering
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+ & \texttt{a} & \texttt{b} & \texttt{c} & \texttt{d} & \texttt{e} & \texttt{f} \\ \midrule
+Częstość (tys.) & 45 & 13 & 12 & 16 & 9 & 5 \\
+Słowo kodowe o stałej długości & 000 & 001 & 010 & 011 & 100 & 101 \\
+Słowo kodowe o zmiennej długości & 0 & 101 & 100 & 111 & 1101 & 1100 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{algorithm}
     \caption{Kodowanie Huffmana}
@@ -1140,6 +1153,8 @@ Algorytm zachłanny
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
+
+
 
 \section{Algorytmy sortowania}
 
