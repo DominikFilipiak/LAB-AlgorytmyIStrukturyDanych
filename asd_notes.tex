@@ -1339,6 +1339,7 @@ Problem minimalnego drzewa rozpinającego to problem znalezienia takiego zbioru 
 Przykład: położenie kabla pod systemem drogowym.
 
 \paragraph{Algorytm Kruskala.}
+Algorytm zachłanny -- w każdym kroku dodajemy krawędź o najmniejszej wadze
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=.9\textwidth]{figures/kruskal1}
@@ -1358,6 +1359,44 @@ Przykład: położenie kabla pod systemem drogowym.
 \end{figure}
 
 \subsection{Algorytm Dijkstry}
+
+\begin{algorithm}
+    \caption{Algorytm Dijkstry}
+    \label{alg:dijkstra}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{Initialize-Single-Source}{$G, s$} \algcost{}{// $\Theta(|V|)$}
+        		\For{ \textbf{each} $v \in G.V$}
+            		\State $v.d \gets \infty$
+            		\State $v.\pi \gets$ \texttt{NIL} 
+            	\EndFor
+            	\State $s.d \gets 0$
+        \EndFunction
+        \Function{Relax}{$u, v, w$} \algcost{}{// $\Theta(1)$}
+        		\If{ $v.d > u.d + w(u,v)$}
+            		\State $v.d \gets u,d + w(u, d)$
+            		\State $v.\pi \gets u$ 
+            	\EndIf
+        \EndFunction
+        \Function{Dijkstra}{$G, u$}            	
+        		\State $\Call{Initialize-Single-Source}{G, s}$
+        		\State $S \gets \varnothing$
+            	\State $Q \gets G.V$
+            \While{$Q \neq \varnothing$}
+        			\State $u \gets \Call{Extract-Min}{Q}$
+        			\State $S \gets S \cup \{u\}$
+        			\For{\textbf{each} $v \in G.Adj[u]$}
+        				\State $\Call{Relax}{u, v, w}$
+        			\EndFor
+            	\EndWhile
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=.9\textwidth]{figures/dijkstra}
+	\caption{Algorytm Dijkstry. Źródło: Cormen et al.}
+\end{figure}
 
 \section{Wyszukiwanie wzorca w tekście}
 
