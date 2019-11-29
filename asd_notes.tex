@@ -963,7 +963,7 @@ $\frac{n^2}{2} = \omega(n)$, ale $\frac{n^2}{2} \neq \omega(n^2)$.
 \centering
 \begin{tabular}{@{}ll@{}}
 \toprule
-Klasa & Opis \\ \midrule
+Rząd & Opis \\ \midrule
 $\Theta(0)=0$ & brak potrzebnych operacji \\
 $\Theta(1)$ & stała \\
 $\Theta(\log n)$ & logarytmiczny \\
@@ -1339,7 +1339,28 @@ Problem minimalnego drzewa rozpinającego to problem znalezienia takiego zbioru 
 Przykład: położenie kabla pod systemem drogowym.
 
 \paragraph{Algorytm Kruskala.}
-Algorytm zachłanny -- w każdym kroku dodajemy krawędź o najmniejszej wadze
+Algorytm zachłanny -- w każdym kroku dodajemy krawędź o najmniejszej wadze.
+
+\begin{algorithm}
+    \caption{Algorytm Kruskala}
+    \label{alg:mst_kruskal}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{MST-Kruskal}{$G, w$} \algcost{}{//$O(|E|\log |V|)$}
+			\State $A \gets \varnothing$
+        		\For{ \textbf{each} $u \in G.V$}
+            		\State $\Call{Make-Set}{v}$ \algcost{}{// jednoelementowe drzewa}
+            	\EndFor         
+            	\State posortuj niemalejąco $G.E$ względem wag
+            	\For{ \textbf{each} $u \in G.E$ w kolejności niemalejących wag}
+            		\If{$\Call{Find-Set}{u} \neq \Call{Find-Set}{v}$}
+            		    \State $A \gets A \cup \{(u, v)\}$
+            			\State $\Call{Union}{u, v}$
+            		\EndIf
+            	\EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=.9\textwidth]{figures/kruskal1}
@@ -1352,6 +1373,31 @@ Algorytm zachłanny -- w każdym kroku dodajemy krawędź o najmniejszej wadze
 \end{figure}
 
 \paragraph{Algorytm Prima.}
+
+\begin{algorithm}[p]
+    \caption{Algorytm Prima}
+    \label{alg:mst_prim}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Function{MST-Prim}{$G, w, r$} \algcost{}{// $O(|E|\log |V|)$}
+        		\For{\textbf{each} $u \in G.V$}
+        			\State $u.key \gets \infty$
+        			\State $u.\pi \gets$ \texttt{NIL}
+            	\EndFor         
+            	\State $r.key \gets 0$
+            \State $Q \gets G.V$
+            	\While{ $Q \neq \varnothing$}
+            		\State $u \gets \Call{Extract-Min}{Q}$
+            		\For{\textbf{each} $v \in G.Adj[u]$}
+            			\If{$v \in Q \land w(u,v) < v.key$}
+            				\State $v.\pi = u$
+            				\State $v.key = w(u,v)$
+            			\EndIf
+            		\EndFor
+            	\EndWhile
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=.9\textwidth]{figures/prim}
@@ -1359,7 +1405,7 @@ Algorytm zachłanny -- w każdym kroku dodajemy krawędź o najmniejszej wadze
 \end{figure}
 
 \subsection{Algorytm Dijkstry}
-
+Algorytm Dijkstry służy do rozwiązywania problemu najkrótszychścieżek z jednym źródłem w ważonym grafie skierowanym z nieujemnymi wagami.
 \begin{algorithm}
     \caption{Algorytm Dijkstry}
     \label{alg:dijkstra}
