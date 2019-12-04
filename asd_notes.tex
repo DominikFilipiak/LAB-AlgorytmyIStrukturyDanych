@@ -884,7 +884,7 @@ Można udowodnić, że randomizowany algorytm quicksort ma oczekiwaną złożono
 
 \subsection{Notacja asympotyczna}
 
-Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie dokładnym oszacowaniem} dla $f(n)$, jeżeli:
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie dokładnym oszacowaniem} dla $f(n)$, co zapisujemy jako $f(n)=\Theta(g(n))$, gdzie:
 $$
 \Theta(g(n)) = \{ f(n): \exists_{c_1, c_2, n_0>0} \forall_{n \geq n_0} \left( 0 \leq c_1 g(n) \leq f(n) \leq c_2 g(n) \right) \}
 $$
@@ -906,23 +906,23 @@ Często pisze się po prostu $O(n)$ w tym znaczeniu, choć jest to nieprecyzyjn
 	Lewa strona się zgadza dla $n \geq 7$ oraz $c_1 \leq 1/14$.
 \end{example}
 
-Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem górnym} dla $f(n)$, jeżeli:
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem górnym} dla $f(n)$, co zapisujemy jako $f(n)=O(g(n))$, gdzie:
 $$
 O(g(n)) = \{ f(n): \exists_{c, n_0>0} \forall_{n \geq n_0} \left(0 \leq f(n) \leq c g(n) \right) \}
 $$
 Zauważmy, że $f(n)=\Theta (g(n)) \implies f(n)=O(g(n))$.
 Np. każda funkcja liniowa zawiera się w $O(n^2)$.
-Górne oszacowanie to w istocie szacowanie przypadku pesymistycznego -- algorytm zadziała nie gorzej niż $cg(n)$.
+Górne oszacowanie to niejako szacowanie przypadku pesymistycznego -- algorytm zadziała nie gorzej niż $cg(n)$.
 
-Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem dolnym} dla $f(n)$, jeżeli:
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznym ograniczeniem dolnym} dla $f(n)$, co zapisujemy jako $f(n)=\Omega(g(n))$, gdzie:
 $$
 \Omega(g(n)) = \{ f(n): \exists_{c, n_0>0} \forall_{n \geq n_0} \left(0 \leq c g(n) \leq f(n) \right) \}
 $$
-Dolne oszacowanie to w istocie szacowanie przypadku optymistycznego -- algorytm nie zadziała lepiej niż $cg(n)$.
+Dolne oszacowanie to niejako oszacowanie przypadku optymistycznego -- algorytm nie zadziała lepiej niż $cg(n)$.
 Zauważmy, że $f(n)=\Theta (g(n)) \implies f(n)=\Omega(g(n))$.
-Co więcej, $f(n)=\Theta (g(n)) \iff f(n)=\Omega(g(n)) \land f(n)=O(g(n))$
+Co więcej, $f(n)=\Theta (g(n)) \iff f(n)=\Omega(g(n)) \land f(n)=O(g(n))$.
 
-Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie niedokładnym ograniczeniem górnym} dla $f(n)$, jeżeli:
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie niedokładnym ograniczeniem górnym} dla $f(n)$, co zapisujemy jako $f(n)=o(g(n))$, gdzie::
 $$
 o(g(n)) = \{ f(n): \forall_{c}\ \exists_{n_0>0}\ \forall_{n \geq n_0} \left(0 \leq f(n) < c g(n) \right) \}
 $$
@@ -936,7 +936,7 @@ $$
 $2n = o(n^2)$, ale $2n^2 \neq o(n^2)$
 \end{example}
 
-Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie niedokładnym ograniczeniem dolnym} dla $f(n)$, jeżeli:
+Powiemy, że funkcja $g(n)$ jest \textbf{asymptotycznie niedokładnym ograniczeniem dolnym} dla $f(n)$, co zapisujemy jako $f(n)=\omega(g(n))$, gdzie:
 $$
 \omega(g(n)) = \{ f(n): \forall_{c}\ \exists_{n_0>0}\ \forall_{n \geq n_0} \left(0 \leq c g(n) < f(n)  \right) \}
 $$
@@ -1012,9 +1012,9 @@ Podstawowe operacje na kolekcjach: $\Call{Search}{S, x}$ -- wyszukiwanie, $\Call
 \centering
 \begin{tabular}{@{\extracolsep{4pt}}lrrrrrrrr@{}}
 \toprule
-\multicolumn{1}{c}{\multirow{2}{*}{struktura}} & \multicolumn{2}{c}{$\Call{Access}{S, i}$} & \multicolumn{2}{c}{$\Call{Search}{S, x}$} & \multicolumn{2}{c}{$\Call{Insert}{S, x}$} & \multicolumn{2}{c}{$\Call{Delete}{S, x}$} \\ \cline{2-3} \cline{4-5} \cline{6-7} \cline{8-9} 
+\multicolumn{1}{c}{\multirow{2}{*}{struktura}} & \multicolumn{2}{c}{$\Call{Access}{S, n}$} & \multicolumn{2}{c}{$\Call{Search}{S, k}$} & \multicolumn{2}{c}{$\Call{Insert}{S, x}$} & \multicolumn{2}{c}{$\Call{Delete}{S, x}$} \\ \cline{2-3} \cline{4-5} \cline{6-7} \cline{8-9} 
 \multicolumn{1}{c}{} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} \\ \hline
-Tablica & $\Theta(1)$ & $O(1)$ & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ \\
+Tablica & $\Theta(1)$ & $O(1)$ & $\Theta(n)$ & $O(n)$ & -- & -- & -- & -- \\
 Lista (jedno-/dwukierunkowa) & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
 Stos & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
 Kolejka & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
@@ -1025,9 +1025,11 @@ Drzewo BST & $\Theta(\log n)$ & $O(n)$ & $\Theta(\log n)$ & $O(n)$ & $\Theta(\lo
 
 \subsection{Stos}
 
-Stos jest \emph{LIFO}. Operacje push, pop -- $\Theta(1)$. 
+Stos jest \emph{LIFO}. 
+Operacje push, pop -- $\Theta(1)$. 
 Dostęp i wyszukiwanie są $\Theta(n)$ w przypadku średnim.
 Jeżeli stos jest większy niż $n$ to powiemy, że jest przepełniony.
+Stos przechowuje wskaźnik \emph{top} na \emph{czubek} stosu.
 
 \begin{minted}{python}
 stack = [3, 4, 5]
@@ -1109,8 +1111,27 @@ Przechodzenie drzewa inorder:
 def inorderTreeWalk(x, indent=1):
   if x is not None:
     inorderTreeWalk(x.left, indent + 1)
-    print(('  ' * indent) + str(x.key))
+    print(str(x.key)
     inorderTreeWalk(x.right, indent + 1)
+    
+inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
+\end{minted}
+Preorder
+\begin{minted}{python}
+def preorderTreeWalk(x, indent=1):
+  if x is not None:
+    print(str(x.key)
+    inorderTreeWalk(x.left, indent + 1)
+    inorderTreeWalk(x.right, indent + 1)
+    
+inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
+\end{minted}
+\begin{minted}{python}
+def inorderTreeWalk(x, indent=1):
+  if x is not None:
+    inorderTreeWalk(x.left, indent + 1)
+    inorderTreeWalk(x.right, indent + 1)
+    print(str(x.key)
     
 inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
 \end{minted}
