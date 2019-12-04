@@ -11,6 +11,7 @@
 \usepackage{pgfplots}
 \usepackage{booktabs}
 \usepackage[T1]{fontenc}
+\usepackage{multirow}
 
 \setminted{linenos=true}
 
@@ -1006,6 +1007,22 @@ $n$ & $O(1)$ & $O(\log n)$ & $O(n)$ & $O(n \log n)$ & $O(n^2)$ & $ n^2 +100n$ & 
 \section{Struktury danych}
 Podstawowe operacje na kolekcjach: $\Call{Search}{S, x}$ -- wyszukiwanie, $\Call{Insert}{S, x}$ -- dodanie nowego elementu, $\Call{Delete}{S, x}$ -- usunięcie, $\Call{Minimum}{S}$, $\Call{Maximum}{S}$, $\Call{Successor}{S, x}$ -- następny element w liniowo uporządkowanym zbiorze, $\Call{Predecessor}{S, x}$ -- poprzedni element w liniowo uporządkowanym zbiorze.
 
+\begin{table}[]
+\caption{Złożoność obliczeniowa podstawowych struktur danych}
+\centering
+\begin{tabular}{lrrrrrrrr}
+\toprule
+\multicolumn{1}{c}{\multirow{2}{*}{struktura}} & \multicolumn{2}{c}{$\Call{Access}{S, i}$} & \multicolumn{2}{c}{$\Call{Search}{S, x}$} & \multicolumn{2}{c}{$\Call{Insert}{S, x}$} & \multicolumn{2}{c}{$\Call{Delete}{S, x}$} \\ \cline{2-9} 
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} \\ \hline
+Tablica & $\Theta(1)$ & $O(1)$ & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ \\
+Lista (jedno-/dwukierunkowa) & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
+Stos & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
+Kolejka & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
+Drzewo BST & $\Theta(\log n)$ & $O(n)$ & $\Theta(\log n)$ & $O(n)$ & $\Theta(\log n)$ & $O(n)$ & $\Theta(\log n)$ & $O(n)$ \\ 
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Stos}
 
 Stos jest \emph{LIFO}. Operacje push, pop -- $\Theta(1)$. 
@@ -1271,7 +1288,7 @@ Wymaga $\Theta(|V|^2)$
             	\State $Q \gets \varnothing $
             	\State $\Call{Enqueue}{Q, s}$
             	\While{$Q \neq \varnothing$}
-            		\State $\Call{Dequeue}{Q}$
+            		\State $u \gets \Call{Dequeue}{Q}$
             		\For{\textbf{each} $v \in G.Adj[u]$}
             			\If{$v.color = \texttt{biały}$}
             				\State $v.color \gets \texttt{szary}$
