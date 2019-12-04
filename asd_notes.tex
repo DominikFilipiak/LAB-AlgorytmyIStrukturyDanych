@@ -1071,6 +1071,7 @@ Dostęp i wyszukiwanie jest $\Theta(n)$, a wstawianie i usuwanie jest $\Theta(1)
 
 \subsection{Drzewa}
 Drzewo to niezorientowany graf spójny i acykliczny.
+Zbiór drzew to las, węzeł nie posiadający \emph{rodzica} to korzeń, a węzeł nie posiadający \emph{dzieci} to liść.
 
 \subsection{Drzewa BST}
 Dla drzewa BST dostęp, wyszukiwanie, wstawanie i usuwanie jest $\Theta(\log n)$, a w najgorszym przypadku mamy $\Theta(n)$.
@@ -1102,34 +1103,25 @@ tree = Tree(root=Node(6,
                           Node(8, None, None))
             ))
 \end{minted}
-Przechodzenie drzewa inorder:
+Przechodzenie drzewa inorder, preorder, postorder:
 \begin{minted}{python}
-def inorderTreeWalk(x, indent=1):
+def preorderTreeWalk(x):
   if x is not None:
-    inorderTreeWalk(x.left, indent + 1)
-    print(str(x.key)
-    inorderTreeWalk(x.right, indent + 1)
-    
-inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
-\end{minted}
-Preorder
-\begin{minted}{python}
-def preorderTreeWalk(x, indent=1):
+    print(x.key)
+    preorderTreeWalk(x.left)
+    preorderTreeWalk(x.right)
+
+def inorderTreeWalk(x):
   if x is not None:
-    print(str(x.key)
-    inorderTreeWalk(x.left, indent + 1)
-    inorderTreeWalk(x.right, indent + 1)
-    
-inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
-\end{minted}
-\begin{minted}{python}
-def inorderTreeWalk(x, indent=1):
+    inorderTreeWalk(x.left)
+    print(x.key)
+    inorderTreeWalk(x.right)
+
+def postorderTreeWalk(x):
   if x is not None:
-    inorderTreeWalk(x.left, indent + 1)
-    inorderTreeWalk(x.right, indent + 1)
-    print(str(x.key)
-    
-inorderTreeWalk(tree.root)  # korzeń najbardziej wysunięty na lewo
+    postorderTreeWalk(x.left)
+    postorderTreeWalk(x.right)
+    print(x.key)
 \end{minted}
 
 \begin{figure}[!htpb]
@@ -1148,16 +1140,102 @@ def treeSearch(x, k):
   else:
     return treeSearch(x.right, k)
     
+def treeSearchIterative(x, k):
+  while x is not None and k != x.key:
+    if k < x.key:
+      x = x.left
+    else:
+      x = x.right
+  return x
+
 nodeWithSeven = treeSearch(tree.root, 7)
 print(nodeWithSeven)
 \end{minted}
 
+Minimum i maksimum:
 \begin{minted}{python}
-	
+def treeMinimum(x):
+  while x.left != None:
+    x = x.left
+  return x
+  
+def treeMaximum(x):
+  while x.right != None:
+    x = x.right
+  return x
 \end{minted}
 
+Następny element do odwiedzenia w porządku inorder:
 \begin{minted}{python}
-	
+def treeSuccessor(x):
+  if x.right is not None:
+    return treeMinimum(x.right)
+  y = x
+  while y is not None and x == y.right:
+    x = y
+    return y
+  
+print(treeSuccessor(tree.root)) # inorder
+\end{minted}
+
+Wstawianie do drzewa
+\begin{minted}{python}
+def treeInsert(T, z):
+  y = None
+  x = T.root
+  while x is not None:
+    y = x
+    if z.key < x.key:
+      x = x.left
+    else:
+      x = x.right
+  z.parent = y
+  if y is None:
+    T.root = z
+  elif z.key < y.key:
+    y.left = z
+  else:
+    y.right = z
+    
+print('Before insertion')
+inorderTreeWalk(tree.root)
+treeInsert(tree, Node(4, None, None))
+print('After insertion')
+inorderTreeWalk(tree.root)
+\end{minted}
+
+Usuwanie z drzewa
+\begin{minted}{python}
+def transplant(T, u, v):
+  if u.parent is None:
+    T.root = v
+  elif u == u.parent.left:
+    u.parent.left = v
+  else:
+    u.parent.right = v
+  if v is not None:
+    v.parent = u.parent
+
+def treeDelete(T, z):
+  if z.left is None:
+    transplant(T, z, z.right)
+  elif z.right is None:
+    transplant(T, y, y.left)
+  else:
+    if y.parent != z:
+      transplant(T, y, y.right)
+      y.right = z.right
+      y.right.parent = y
+    transplant(T, z, y)
+    y.left = z.left
+    y.left.parent = y
+    
+print('Before deletion:')
+inorderTreeWalk(tree.root)
+nodeToBeRemoved = treeSearch(tree.root, 4)
+treeDelete(tree.root, nodeToBeRemoved)
+print('After deletion:')
+inorderTreeWalk(tree.root)
 \end{minted}
 
 \subsection{Kodowanie Huffmana}
