@@ -1010,9 +1010,9 @@ Podstawowe operacje na kolekcjach: $\Call{Search}{S, x}$ -- wyszukiwanie, $\Call
 \begin{table}[]
 \caption{Złożoność obliczeniowa podstawowych struktur danych}
 \centering
-\begin{tabular}{lrrrrrrrr}
+\begin{tabular}{@{\extracolsep{4pt}}lrrrrrrrr@{}}
 \toprule
-\multicolumn{1}{c}{\multirow{2}{*}{struktura}} & \multicolumn{2}{c}{$\Call{Access}{S, i}$} & \multicolumn{2}{c}{$\Call{Search}{S, x}$} & \multicolumn{2}{c}{$\Call{Insert}{S, x}$} & \multicolumn{2}{c}{$\Call{Delete}{S, x}$} \\ \cline{2-9} 
+\multicolumn{1}{c}{\multirow{2}{*}{struktura}} & \multicolumn{2}{c}{$\Call{Access}{S, i}$} & \multicolumn{2}{c}{$\Call{Search}{S, x}$} & \multicolumn{2}{c}{$\Call{Insert}{S, x}$} & \multicolumn{2}{c}{$\Call{Delete}{S, x}$} \\ \cline{2-3} \cline{4-5} \cline{6-7} \cline{8-9} 
 \multicolumn{1}{c}{} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} & \multicolumn{1}{c}{średnia} & \multicolumn{1}{c}{pes.} \\ \hline
 Tablica & $\Theta(1)$ & $O(1)$ & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ \\
 Lista (jedno-/dwukierunkowa) & $\Theta(n)$ & $O(n)$ & $\Theta(n)$ & $O(n)$ & $\Theta(1)$ & $O(1)$ & $\Theta(1)$ & $O(1)$ \\
