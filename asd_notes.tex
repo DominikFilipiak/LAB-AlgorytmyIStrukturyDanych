@@ -1094,14 +1094,23 @@ class Node:                           # węzeł drzewa
 \end{minted}
 Tworzenie drzewa:
 \begin{minted}{python}
-tree = Tree(root=Node(6, 
-                      Node(5, 
-                          Node(2, None, None), 
-                          Node(5, None, None)), 
-                      Node(7, 
-                          None, 
-                          Node(8, None, None))
-            ))
+# drzewo z CLRS, str. 288, rys. 12.1a.
+
+n_two = Node(2, None, None)
+n_five = Node(5, None, None)
+n_five_2 = Node(5, n_two, n_five)
+n_eight = Node(8, None, None)
+n_seven = Node(7, None, n_eight)
+n_six = Node(6, n_five_2, n_seven)
+
+n_six.parent = None
+n_five_2.parent = n_six
+n_five.parent = n_five_2
+n_two.parent = n_five_2
+n_seven.parent = n_six
+n_eight.parent = n_seven
+
+tree = Tree(root=n_six)
 \end{minted}
 Przechodzenie drzewa inorder, preorder, postorder:
 \begin{minted}{python}
@@ -1170,11 +1179,11 @@ Następny element do odwiedzenia w porządku inorder:
 def treeSuccessor(x):
   if x.right is not None:
     return treeMinimum(x.right)
-  y = x
+  y = x.parent
   while y is not None and x == y.right:
     x = y
-    return y
-  
+    y = y.parent
+  return y
 print(treeSuccessor(tree.root)) # inorder
 \end{minted}
 
