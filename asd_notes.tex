@@ -1231,6 +1231,7 @@ def treeDelete(T, z):
   elif z.right is None:
     transplant(T, y, y.left)
   else:
+    y = treeMinimum(z.right)
     if y.parent != z:
       transplant(T, y, y.right)
       y.right = z.right
