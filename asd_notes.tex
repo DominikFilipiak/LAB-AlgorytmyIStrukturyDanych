@@ -1278,7 +1278,7 @@ Tym samym oszczędzamy ok. 25\%!
     \begin{algorithmic}[1] % The number tells where the line numbering should start
         \Function{Huffman}{$C$} \algcost{}{// $O(n \log n)$}
         		\State $n \gets |C|$
-        		\State $Q = C$ \algcost{}{// Kolejka priorytetowa}
+        		\State $Q \gets \Call{PriorityQueue}{C}$ \algcost{}{// Kolejka priorytetowa}
             	\For{$i \gets 1$  \textbf{to} $n - 1$ }
             		\State $z \gets$ nowy węzeł
             		\State $z.left \gets x \gets \Call{ExtractMin}{Q}$
