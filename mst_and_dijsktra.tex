@@ -59,11 +59,11 @@ Algorytm zachłanny -- w każdym kroku dodajemy krawędź o najmniejszej wadze.
     \begin{algorithmic}[1] % The number tells where the line numbering should start
         \Function{MST-Kruskal}{$G, w$} \algcost{}{//$O(|E|\log |V|)$}
 			\State $A \gets \varnothing$
-        		\For{ \textbf{each} $u \in G.V$}
+        		\For{ \textbf{each} $v \in G.V$}
             		\State $\Call{Make-Set}{v}$ \algcost{}{// jednoelementowe drzewa}
             	\EndFor         
-            	\State posortuj niemalejąco $G.E$ względem wag
-            	\For{ \textbf{each} $u \in G.E$ w kolejności niemalejących wag}
+            	\State posortuj niemalejąco $G.E$ względem wag $w$
+            	\For{ \textbf{each} $(u, v) \in G.E$ w kolejności niemalejących wag}
             		\If{$\Call{Find-Set}{u} \neq \Call{Find-Set}{v}$}
             		    \State $A \gets A \cup \{(u, v)\}$
             			\State $\Call{Union}{u, v}$
@@ -124,9 +124,9 @@ Algorytm Dijkstry służy do rozwiązywania problemu najkrótszych ścieżek z j
             		\State $v.\pi \gets u$ 
             	\EndIf
         \EndFunction
-        \Function{Dijkstra}{$G, u$}            	
-        		\State $\Call{Initialize-Single-Source}{G, s}$
-        		\State $S \gets \varnothing$
+        \Function{Dijkstra}{$G, u$}            	\algcost{}{// naiwnie $O(|V|^2)$,}
+        		\State $\Call{Initialize-Single-Source}{G, s}$ \algcost{}{// da się zejść do $O(|V|\log |V| + |E|)$}
+        		\State $S \gets \varnothing$ \algcost{}{// ale wymaga to kopca Fibonacciego}
             	\State $Q \gets G.V$
             \While{$Q \neq \varnothing$}
         			\State $u \gets \Call{Extract-Min}{Q}$
