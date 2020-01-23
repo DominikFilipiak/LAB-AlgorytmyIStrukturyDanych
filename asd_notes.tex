@@ -1548,7 +1548,7 @@ Algorytm Dijkstry służy do rozwiązywania problemu najkrótszych ścieżek z j
         \EndFunction
         \Function{Relax}{$u, v, w$} \algcost{}{// $\Theta(1)$}
         		\If{ $v.d > u.d + w(u,v)$}
-            		\State $v.d \gets u,d + w(u, d)$
+            		\State $v.d \gets u.d + w(u, v)$
             		\State $v.\pi \gets u$ 
             	\EndIf
         \EndFunction
